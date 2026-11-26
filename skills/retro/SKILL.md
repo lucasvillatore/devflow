@@ -27,6 +27,7 @@ Go through the session looking for:
 - **Information access**: something the agent needed and could not see (logs, data, a service, a document). Could it get read-only access next time?
 - **Tool economy**: expensive or repeated tool calls (huge outputs, the same search many times, a slow command) that a narrower command or a small script would replace.
 - **Steering files**: instructions in `~/.claude/CLAUDE.md`, `~/.claude/rules/`, the repository's `CLAUDE.md` or the Vault conventions that were ignored, contradicted each other, or change nothing (no-ops). Large steering files are a finding by themselves.
+- **Visual explanation**: understanding cost a lot of reading where a diagram would have done it: a long block read to understand it (a function of hundreds of lines, several files in a row), the same structure explained more than once or the user asking to explain again, a flow between systems followed in the conversation (service → queue → job → database).
 - **devflow gaps**: a skill missing a step, asking the wrong thing, or a step the user had to do by hand every time.
 - **Missing knowledge**: facts the session had to discover that are not in the Vault. Look in particular for:
   - **diverging terms**: a term used differently from the glossary, or two names for the same thing (a candidate for a glossary entry or a flagged ambiguity);
@@ -56,6 +57,7 @@ Where the fix goes:
 - a team rule that needs judgement → **Vault convention** (`<vault>/devflow/conventions.md`);
 - a repository fact (command, branch, resource, where things live) → **repository profile** (`<vault>/devflow/projects/<repo>.md`);
 - an instruction that is a no-op or contradicts another → **remove or merge it**, in the file where it lives;
+- a structure or flow that was hard to understand → **diagram**: `/devflow:draw <function, file or flow>`, saved where it will be read again (journey or context in the knowledge base for a business flow, repository profile for a technical flow, the Issue workspace for something only this Issue needs);
 - a devflow skill that should behave differently → **devflow issue** (draft in English, same format as `/devflow:ask`, on the repository shown by `python3 <plugin>/scripts/catalog.py`).
 
 Prefer a check to an instruction: an instruction costs context in every session and can be ignored; a check costs nothing until it fires.

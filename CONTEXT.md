@@ -29,7 +29,7 @@ Any self-contained part of devflow (a skill, an agent, a script) that can be tur
 _Avoid_: box, module, feature
 
 **Area**:
-A group of Components that serve one phase or concern: base, issue, planning, development, delivery, investigate, knowledge.
+A group of Components that serve one phase or concern: base, issue, planning, development, delivery, investigate, knowledge. The **experimental** Area holds Components the user is still testing; they move to their real Area once validated.
 _Avoid_: phase (a phase is one kind of Area), category
 
 **Vault**:

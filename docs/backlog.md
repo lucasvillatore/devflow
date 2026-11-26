@@ -25,6 +25,8 @@ The user reads better with visuals: the flow, an Issue's state and explanations 
 - **HTML page**: like `prototypes/workflow.prototype.html` (a clickable simulation of the flow), or a generated page per Issue (Jira status, Tasks, commits, PRs), opened locally or published as a private claude.ai Artifact.
 - **FigJam diagrams** through the Figma connector, for architecture or flows to share with the team.
 
+Testing now: `/devflow:draw` (experimental Area) analyses a function, file or system flow, recommends a format with reasons (the user picks) and draws it; formats in `references/draw-formats.md` (Mermaid available; draw.io, Canvas, HTML, FigJam planned); `retro` points to it when understanding cost a lot of reading. `/devflow:analyze` (experimental) maps the same targets and applies improvement lenses (`references/analysis-lenses.md`: complexity, partial failures and error handling available; architecture, testability, performance, observability, security and team conventions planned); `draw` reuses its map. `investigate-issue` should reuse the map too (`references/analysis-map.md`).
+
 Skills that could use it: `ask` (show the flow and where the user is), `pick-issue` and `plan-issue` (Issue and Task graph), `investigate-issue` (how the system works today, call flow), `retro` (the session timeline), `open-pr` (the Summary already prefers a visual), kb skills (journeys). Related existing skills: Matt Pocock's `prototype`, and the `artifact-design`, `artifact-diagramming` and `dataviz` skills.
 
 ## dev-task (development)
