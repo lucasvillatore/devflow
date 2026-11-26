@@ -15,8 +15,9 @@ The goal is understanding at a glance: concepts and how they connect, in the use
 Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks the format; never draw before they do.
 
 1. **Analysis.** Always analyse before drawing.
-   - If an analysis of the same target exists in the Issue workspace (`type: Analysis`, written by `/devflow:analyze`), use its map and say so; its findings can be highlighted in the drawing (blocks with high-severity findings in the `bad` color).
-   - Otherwise build the map following `references/analysis-map.md` at the root of this plugin (two levels above this skill's directory) and show it.
+   - **An Issue key as the argument** draws the whole problem: read everything in `<vault>/issues/<KEY>/` that exists: the analyses (`type: Analysis`, their map), the investigation (`type: Investigation`, the signal, the reproduction and the facts) and the diagnosis (`type: Diagnosis`, the verdict and the classification). Say which ones you found. The map comes from the analysis; when there is none, build it following `references/analysis-map.md`.
+   - **A function, file or flow as the argument**: if an analysis of the same target exists, use its map and say so; otherwise build the map following `references/analysis-map.md` at the root of this plugin (two levels above this skill's directory).
+   - Show the map, plus what each block carries from the other files: findings, facts, and its diagnosis class.
 
 2. **Suggestion.** Read `references/draw-formats.md` at the root of this plugin. From what the analysis found, recommend one **available** format and say:
    - why it is the best fit for this flow, pointing at what the analysis found (e.g. "three services call each other in order, so a sequence shows it best");
@@ -24,7 +25,9 @@ Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks
    When the flow is too big for one picture, say how you would split it (an overview plus one diagram per group).
    Stop and wait for the user to pick. If they pick a planned format, say it is not available yet and ask for another.
 
-3. **Drawing.** In the chosen format, following the Vault's `.kb/diagrams.md` when it exists (colors per state, solid line for the normal path, dashed for a detour or an inferred link). At most about 12 nodes per diagram. Each node: the concept name and, on a second line, the `file:line` range (`calc[Compute price<br/>cart.service.ts:120-210]`). Under the diagram, a short legend: one line per block saying what it does.
+3. **Drawing.** When there is a diagnosis or findings, color each block by what it carries, using the Vault's `.kb/diagrams.md` classes: the cause that **explains** in `bad`; **probable** causes in `bad` with a dashed border; what **contributes** in `wait`; blocks with only **unrelated** improvements in `info`; the rest without a class. Mark the path the reproduction takes with solid arrows and label where the signal goes red. When the problem needs two views (the code structure and the order of calls across systems), suggest both in step 2 and draw each one the user picks.
+
+   In the chosen format, following the Vault's `.kb/diagrams.md` when it exists (colors per state, solid line for the normal path, dashed for a detour or an inferred link). At most about 12 nodes per diagram. Each node: the concept name and, on a second line, the `file:line` range (`calc[Compute price<br/>cart.service.ts:120-210]`). Under the diagram, a short legend: one line per block saying what it does.
 
 4. **Save.** Ask where to save it, suggesting the place it will be read again:
    - a business flow → the knowledge base (suggest `/devflow:kb-journey` or `/devflow:kb-context` to fold it into a journey or context);
