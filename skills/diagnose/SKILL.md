@@ -14,11 +14,11 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
 
 ## Inputs
 
-From the workspace (`references/workspace.md` at the root of this plugin; an Issue key or a name):
+From the workspace (`references/workspace.md` at the root of this plugin (two levels above this skill's directory); an Issue key or a name). Find each input by its frontmatter `type`, never by file name:
 
 - **the problem**: `index.md` (the symptom, how it shows up, the acceptance criteria); when it says little, the user's description;
 - **the analysis**: every `type: Analysis` file (`/devflow:analyze`): the map and the code findings, neutral about the problem;
-- **the investigation**: `investigation.md` when it exists (`investigate-issue`): facts with evidence, such as the reproduction, outputs, data, logs.
+- **the investigation**: the `type: Investigation` file when it exists (`/devflow:investigate-issue`): facts with evidence, such as the reproduction, outputs, data, logs.
 
 Say which inputs you have. Ignore facts struck out under the investigation's Corrections. When the investigation says the **premise was not confirmed**, the verdict is that: say the reported behavior was not reproduced, with the evidence, and what would make it true; do not look for a cause anyway. With neither analysis nor investigation, stop and suggest `/devflow:analyze` (to read the code) and the investigation (to get facts).
 
@@ -45,7 +45,7 @@ Say which inputs you have. Ignore facts struck out under the investigation's Cor
    type: Diagnosis
    title: <problem in a few words>
    confidence: <high | medium | low>
-   inputs: ["[[analysis-...]]", "[[investigation]]"]
+   inputs: ["[[<real file name of each input, without .md>]]"]
    timestamp: YYYY-MM-DD
    ---
 

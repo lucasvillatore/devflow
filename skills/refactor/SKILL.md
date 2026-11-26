@@ -38,9 +38,11 @@ Workspace: `references/workspace.md` (an Issue key or a name). The evidence live
    - optional: mutation testing on the target, when the user wants it.
    When anything is not equivalent, show the difference and go back to step 5. Never claim equivalence without the `EQUIVALENT` line.
 
-7. **Record** `<vault>/issues/<id>/refactor-<slug>.md` (name in the configured language, e.g. `refatoracao-<slug>.md`): target, the complexity table, the tests added (by behavior), coverage before and after, the equivalence result (number of cases, command, output), suspicious behaviors pinned but not fixed, and the commands to reproduce. It is ready for the Evidence section of `/devflow:open-pr`.
+7. **Record** `<vault>/issues/<id>/refactor-<slug>.md` (name in the configured language, e.g. `refatoracao-<slug>.md`; frontmatter `type: Refactor`, `title`, `target`, `timestamp`): target, the complexity table, the tests added (by behavior), coverage before and after, the equivalence result (number of cases, command, output), suspicious behaviors pinned but not fixed, and the commands to reproduce. It is ready for the Evidence section of `/devflow:open-pr`.
 
-The characterization tests stay in the repository as regression tests. Nothing is committed here.
+8. **Close the Task** when the target came from one (a `refactor-plan` or `plan-issue` Task): follow "Closing a Task" in `references/tasks.md` (status `done`, its box ticked in the Planning). Offer the commit; never run it unasked.
+
+The characterization tests stay in the repository as regression tests.
 
 ## Answer
 

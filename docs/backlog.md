@@ -12,6 +12,38 @@ Based on Matt Pocock's skills of the same name, with Jira (from `tracker.md`) in
 
 Open questions: does the user create epics and stories in Jira, or does that go through the PO (then generate text to paste instead of publishing)? Does the user triage bugs? Mapping of states to Jira statuses or labels, and of "blocked by" to the Jira link type.
 
+## Review fixes (independent review, 2026-11-26)
+
+An agent that did not take part in building devflow reviewed the whole repository. All tests passed. To fix, most severe first:
+
+Fixed: 1 (files found by `type`), 2 (shared `references/tasks.md`), 3 (open-pr evidence sources, Decisions section in the Task template), 4 (closing a Task, manual in `flow.md` until dev-task; refactor closes its own Task).
+
+**Medium**
+5. `awsq` uses exit 2 for an expired session, but `aws` also exits 2 on argument errors: use its own code (e.g. 75) or match the stderr text.
+6. `awsq login`: `grep | tail` under `set -euo pipefail` exits silently when the login log has no code; add `|| true`.
+7. refactor measures "after" with `--function`, hiding complexity moved into extracted functions; `complexity.py` stores paths relative to the current folder instead of the repository root.
+8. `kb_verify.py`: crashes on non-mapping frontmatter and on invalid YAML in reserved files; empty frontmatter passes.
+9. `setup.py check` flags any template file the user deleted or renamed, forever; leave content folders out of `check`.
+10. `references/workspace.md` adds a `**Start**` log entry, against the log.md rule.
+11. `workspace.md` and `draw` disagree on whether draw always saves in the workspace (the user wants always).
+12. `dbq` hides every `pass` failure (a locked GPG agent included) as "not in the pass store".
+
+**Low**
+13. README lists dev-task (does not exist), leaves out retro and the experimental Area, names 2 of the 4 tests: point to `/devflow:ask` or generate from components.json.
+14. catalog.py prints every backlog heading as planned (Visual views is partly done); the backlog calls the Architecture lens planned; it points to the untracked `prototypes/` folder.
+15. retro, open-pr and diagnose refer to plugin files without the "two levels above this skill's directory" sentence.
+16. CONTEXT.md's workspace definition lists only index, log and Tasks, and says log.md has frontmatter.
+17. The backlog's personal-layer entry still says guardrails may go in a repository's `.claude/`.
+18. pick-issue looks for local paths in repository profiles, which have no local-path field.
+19. diagnose never names `/devflow:investigate-issue`.
+20. draw puts a link in the repository profile (in the Vault's git) to a page under the git-ignored `issues/`.
+21. Localized file names applied unevenly (`retro.md`, `scripts/`, `refactor/plan/plan.md`); `refactor/plan/` can clash with a target named `plan`.
+22. `equivalence.py` silently overwrites duplicate ids.
+23. `setup.py`: a CLAUDE.md with the start marker but no end marker gets a second block.
+24. refactor tells the agent to run `/devflow:draw` mid-skill, against "Components never call each other".
+
+**Structural**: the "find by type" rule (done) also covers 16 and 21; `bin/` scripts need tests with fake `aws` and `pass`; README, backlog and CONTEXT drift from components.json.
+
 ## Visual views
 
 The user reads better with visuals: the flow, an Issue's state and explanations should have a visual form, not only text. Best format still open. Options to explore:

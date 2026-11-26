@@ -19,7 +19,7 @@ Push the current branch and open the PR with a title and body in the team's form
 
 1. **Check the branch.** Done when it is not the default branch, nothing uncommitted belongs to the PR, and the profile's lint and tests passed on this branch (run them if there is no recent result in the conversation). Report failures and stop.
 
-2. **Gather the material.** `git log <base>..HEAD`, `git diff --stat <base>...HEAD`, the workspace `<vault>/issues/<id>/` when it exists (`index.md`, the Planning, `done` Tasks and their "Decisions" sections) and the evidence already produced in the conversation (test output, staging validation, commands run against data). Done when every commit of the branch is covered by some part of the body.
+2. **Gather the material.** `git log <base>..HEAD`, `git diff --stat <base>...HEAD`, the workspace `<vault>/issues/<id>/` when it exists (`references/workspace.md` at the root of this plugin (two levels above this skill's directory); find files by `type`): the Issue, the Planning, `done` Tasks and their Decisions sections, and as evidence the `Refactor` records (complexity, equivalence, tests), the `Diagnosis` (the cause the PR fixes) and the `Investigation` (the signal: red before, green after when it can be rerun) and the evidence already produced in the conversation (test output, staging validation, commands run against data). Done when every commit of the branch is covered by some part of the body.
 
 3. **Write title and body** following `pull-request.md`, in its language. The Issue link, when there is a key, is `https://<site>/browse/<KEY>`. End the body with the attribution line Claude Code asks for, if any. Show both to the user and wait for approval: the PR is visible to the team.
 

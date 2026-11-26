@@ -18,3 +18,5 @@ timestamp:
 # Por que
 
 # Criterios de aceite
+
+# Decisões

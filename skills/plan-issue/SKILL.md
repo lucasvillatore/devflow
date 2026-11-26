@@ -12,7 +12,7 @@ Turn an Issue into Tasks through an interview. Writes only to the Issue workspac
 
 1. Read `~/.config/devflow/config.json` (`vault`, `language`). Without it, stop and tell the user to run `/devflow:setup`.
 2. Find the workspace following `references/workspace.md` at the root of this plugin (two levels above this skill's directory); it may be an Issue key or a name.
-3. Read the workspace: `index.md` (the Issue), `log.md`, every `N-*.md`, and the diagnosis, investigation and analysis files when they exist (`type: Diagnosis`, `investigation.md`, `type: Analysis`). Decisions they already settle (the root cause, a confirmed fact) are not asked again; open them as context in the first round. Without a workspace: for an Issue key, suggest `/devflow:pick-issue <KEY>` first; for a name, create it (see the reference) with the context the user gives.
+3. Read the workspace, finding files by frontmatter `type` (see the reference): the Issue, `log.md`, every Task, and the Diagnosis, Investigation and Analysis files when they exist. Decisions they already settle (the root cause, a confirmed fact) are not asked again; open them as context in the first round. Without a workspace: for an Issue key, suggest `/devflow:pick-issue <KEY>` first; for a name, create it (see the reference) with the context the user gives.
 4. Read `<vault>/devflow/workflow.md` (Task statuses) and, from the Vault's knowledge base, the glossary terms and contexts that match the Issue's subject (search the Vault for its key words). Read only what is relevant.
 
 Read `references/grilling.md` and the templates in `templates/issue/<language>/` at the root of this plugin (two levels above this skill's directory). Write every file in the configured language.
@@ -37,21 +37,11 @@ Read `references/grilling.md` and the templates in `templates/issue/<language>/`
 
 3. **Stop** when the frontier is empty and wait for the user to confirm you are aligned.
 
-4. **Write the Tasks.** One Task is one deliverable and one commit, in one repository.
-   - Fill Context (only what this Task needs), What, How, Why (only when it is not obvious), Acceptance criteria (verifiable).
-   - `paths`: the repository or files this Task touches (absolute paths that exist on this machine).
-   - `depends_on`: wikilinks of Tasks that must be `done` first. Tasks without dependencies between them can be done in parallel.
-   - `status: todo`, `timestamp` today.
-   - In the planning file, list every Task under the Acceptance criteria as `- [ ] [[N-slug]]` and set the planning's `status: done`. Whoever finishes a Task checks its box.
-   - Add a `log.md` entry on top: `## YYYY-MM-DD` and `**Plan**: <n> Tasks created (<repositories>)`.
+4. **Write the Tasks** following `references/tasks.md` at the root of this plugin: numbering after the Planning, the checklist in the Planning, the `**Plan**` log entry. Then set the Planning's `status: done`.
 
 ## Re-planning
 
-When the planning is resumed after Tasks exist:
-- Never rewrite a Task with `status: done`, nor uncheck it in the planning.
-- New Tasks take the next free number.
-- Before changing a Task with `status: todo`, `doing` or `blocked`, show the change and wait for confirmation.
-- Set the planning back to `doing` while the interview runs and to `done` when the Tasks are written. Log it as `**Replan**`.
+When the planning is resumed after Tasks exist, follow the rules of `references/tasks.md` (done Tasks are never rewritten, new Tasks take the next number, changes to open Tasks are confirmed first). Set the Planning back to `doing` while the interview runs and to `done` when the Tasks are written; the log entry is `**Replan**`.
 
 ## Answer
 

@@ -6,7 +6,7 @@ Areas, in the usual order (each can be used on its own):
 
 1. **issue**: pick the Issue and load its context.
 2. **planning**: interview until no decision is open, then split into Tasks.
-3. **development**: implement one Task at a time, validate, commit.
+3. **development**: implement one Task at a time, validate, commit. There is no development skill yet: ask for the implementation directly, and when a Task is finished, close it (status `done`, its box ticked in the Planning; ask Claude to do it).
 4. **delivery**: open the pull request.
 5. **investigate**: read data, logs and infrastructure (read-only by default).
 6. **knowledge**: the Vault's knowledge base (journeys, contexts, rules, glossary).

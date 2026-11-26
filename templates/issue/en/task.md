@@ -18,3 +18,5 @@ timestamp:
 # Why
 
 # Acceptance criteria
+
+# Decisions

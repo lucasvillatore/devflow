@@ -21,7 +21,7 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
 
 ## Steps
 
-1. **Start from what exists.** Read `index.md` (the symptom), the analyses (`type: Analysis`: reuse the map as the starting point) and an existing `investigation.md` (resume from it; do not redo what is recorded). Restate the symptom in one line: what happens, where, since when.
+1. **Start from what exists.** Read `index.md` (the symptom), the analyses (`type: Analysis`: reuse the map as the starting point) and an existing `type: Investigation` file, whatever its name (resume from it and keep writing to it; do not redo what is recorded or create a second one). Restate the symptom in one line: what happens, where, since when.
 
 2. **Check the premise.** The report may be wrong: the behavior may be expected, the data may come wrong from another system, or the symptom may be somewhere else. Treat the reported symptom as a claim to verify, not a fact; do not look only for confirmation. The signal of the next step is also the premise test.
 
@@ -34,7 +34,7 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
 
 5. **Collect facts** around the failing path: what the data looks like before and after, which calls run and in what order, what the logs say at the failure point, which branches the input takes. Record what was checked and found nothing too: it discards hypotheses. Do not explain the cause; describe what happens.
 
-6. **Record** `<vault>/issues/<id>/investigation.md` (name in the configured language, e.g. `investigacao.md`), updating it as facts come in, so a dropped session loses nothing:
+6. **Record** the investigation file: the existing `type: Investigation` one, or a new `<vault>/issues/<id>/investigation.md` (name in the configured language, e.g. `investigacao.md`), updating it as facts come in, so a dropped session loses nothing:
 
    ```markdown
    ---

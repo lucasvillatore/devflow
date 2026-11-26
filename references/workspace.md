@@ -20,3 +20,19 @@ When the folder does not exist, create it with `index.md` and `log.md` from `tem
 Every skill works the same way; only what depends on the tracker is skipped: no assignee or status changes, no Issue link, no key in titles or branch names unless the user gives one.
 
 When the work later becomes an Issue, `/devflow:pick-issue <KEY> <name>` adopts the workspace: renames the folder to the key, fills the tracker fields of `index.md` and keeps every other file.
+
+## Finding files inside it
+
+Find workspace files by their frontmatter `type`, never by file name: names follow the configured language (`investigation.md` is `investigacao.md` in pt-BR) and may change. When linking one file from another, use its real file name in the wikilink.
+
+| type | What | Written by |
+| :-- | :-- | :-- |
+| `Issue` | `index.md`: the Issue or the work | pick-issue, or whoever creates the workspace |
+| `Task` | one Task; the **Planning** is the Task whose file name starts with `1-` | plan-issue, refactor-plan (`references/tasks.md`) |
+| `Analysis` | map and findings of a target | analyze |
+| `Investigation` | facts, signal, corrections | investigate-issue |
+| `Diagnosis` | verdict on the problem | diagnose |
+| `Refactor` | proof of one refactoring | refactor |
+| `Retro` | retrospective of a session | retro |
+
+`log.md` has no frontmatter. Folders (`diagrams/`, `scripts/`, `refactor/`) hold supporting files, not typed documents.
