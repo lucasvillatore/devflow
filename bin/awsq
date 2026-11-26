@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# awsq: run the AWS CLI with the right SSO profile, from the devflow Vault.
+#
+#   awsq <env> <role> <aws args...>   run aws with the profile mapped to <env>/<role>
+#   awsq login                        start the SSO login and print the approval link
+#   awsq status                       tell whether the SSO session is valid (exit 2 when expired)
+#   awsq profiles                     list the mapped profiles and what each is for
+#
+# Profiles come from <vault>/devflow/investigate/aws.json (Vault path in ~/.config/devflow/config.json):
+#   {"sso_session": "my-sso", "profiles": {"stg/developer": {"profile": "my-stg", "use_for": "..."}}}
+# The first profile is used to check the session. Credentials never leave the AWS CLI cache.
+
+set -euo pipefail
+
+STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/awsq"
+LOGIN_LOG="$STATE_DIR/login.log"
+
+usage() {
+  sed -n '2,8p' "$0" | sed 's/^# \{0,1\}//'
+  exit 1
+}
+
+config_get() {
+  python3 - "$@" <<'PY'
+import json, os, sys
+config = os.path.expanduser("~/.config/devflow/config.json")
+try:
+    vault = json.load(open(config))["vault"]
+except (OSError, ValueError, KeyError):
+    sys.exit("awsq: devflow is not set up (run /devflow:setup)")
+path = os.path.join(vault, "devflow", "investigate", "aws.json")
+try:
+    data = json.load(open(path))
+except OSError:
+    sys.exit(f"awsq: no AWS profiles at {path} (see the README next to it)")
+except ValueError as error:
+    sys.exit(f"awsq: invalid JSON in {path}: {error}")
+what = sys.argv[1]
+profiles = data.get("profiles") or {}
+if what == "session":
+    print(data.get("sso_session", ""))
+elif what == "check":
+    print(next(iter(profiles.values()), {}).get("profile", ""))
+elif what == "profile":
+    print((profiles.get(sys.argv[2]) or {}).get("profile", ""))
+elif what == "list":
+    for key, value in sorted(profiles.items()):
+        print(f"{key:<18} {value.get('profile', ''):<24} {value.get('use_for', '')}")
+PY
+}
+
+session_valid() {
+  local check
+  check=$(config_get check)
+  [[ -n "$check" ]] && aws sts get-caller-identity --profile "$check" >/dev/null 2>&1
+}
+
+cmd_status() {
+  if session_valid; then
+    echo "SSO: session valid"
+  else
+    echo "SSO: session expired (run: awsq login)"
+    exit 2
+  fi
+}
+
+cmd_login() {
+  if session_valid; then
+    echo "SSO: session already valid"
+    return
+  fi
+  local session
+  session=$(config_get session)
+  [[ -n "$session" ]] || { echo "awsq: no sso_session in aws.json" >&2; exit 1; }
+  mkdir -p "$STATE_DIR"
+  pkill -f "aws sso login --sso-session $session" 2>/dev/null || true
+  nohup aws sso login --sso-session "$session" --use-device-code --no-browser >"$LOGIN_LOG" 2>&1 &
+  for _ in $(seq 1 30); do
+    grep -q "autofill" "$LOGIN_LOG" 2>/dev/null && break
+    sleep 0.5
+  done
+  local code url
+  code=$(grep -A2 "enter the code" "$LOGIN_LOG" | tail -1)
+  url=$(grep -A1 "autofill" "$LOGIN_LOG" | tail -1)
+  if [[ -z "$url" ]]; then
+    echo "awsq: could not start the login. Output:" >&2
+    cat "$LOGIN_LOG" >&2
+    exit 1
+  fi
+  echo "Approve in the browser (the login waits in the background):"
+  echo "$url"
+  echo "Code: $code"
+}
+
+[[ $# -ge 1 ]] || usage
+
+case "$1" in
+  login) cmd_login ;;
+  status) cmd_status ;;
+  profiles) config_get list ;;
+  -h | --help) usage ;;
+  *)
+    [[ $# -ge 3 ]] || usage
+    key="$1/$2"
+    profile=$(config_get profile "$key")
+    if [[ -z "$profile" ]]; then
+      echo "awsq: unknown profile $key. Available:" >&2
+      config_get list >&2
+      exit 1
+    fi
+    shift 2
+    if ! session_valid; then
+      echo "SSO: session expired. Run 'awsq login' and approve the link." >&2
+      exit 2
+    fi
+    exec aws --profile "$profile" "$@"
+    ;;
+esac

@@ -27,7 +27,10 @@
       ]
     },
     "investigate": {
-      "skills": []
+      "skills": [
+        "awsq",
+        "dbq"
+      ]
     },
     "knowledge": {
       "required": true,

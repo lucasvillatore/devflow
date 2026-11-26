@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# dbq <project> <env> <name> [client args]
+# Reads the URI at <project>/<env>/db/<name> in `pass` and opens the right client by scheme
+# (mongosh, mysql, redis-cli). The URI and password are never printed.
+set -euo pipefail
+[[ $# -ge 3 ]] || { echo "usage: dbq <project> <env> <name> [client args]" >&2; exit 2; }
+entry="$1/$2/db/$3"; shift 3
+uri=$(pass show "$entry" 2>/dev/null | head -n1) || { echo "dbq: '$entry' is not in the pass store" >&2; exit 1; }
+
+case "$uri" in
+  mongodb://*|mongodb+srv://*)
+    exec mongosh "$uri" --quiet "$@" ;;
+  mysql://*)
+    re='^mysql://([^:@/]+)(:([^@]*))?@([^:/?]+)(:([0-9]+))?(/([^?]*))?'
+    [[ $uri =~ $re ]] || { echo "dbq: invalid mysql URI in '$entry'" >&2; exit 1; }
+    user=${BASH_REMATCH[1]} pass=${BASH_REMATCH[3]} host=${BASH_REMATCH[4]} port=${BASH_REMATCH[6]:-3306} db=${BASH_REMATCH[8]}
+    pass=$(printf '%b' "${pass//%/\\x}")
+    MYSQL_PWD=$pass exec mysql -h "$host" -P "$port" -u "$user" ${db:+"$db"} "$@" ;;
+  redis://*|rediss://*)
+    command -v redis-cli >/dev/null || { echo "dbq: redis-cli is not installed" >&2; exit 1; }
+    exec redis-cli -u "$uri" "$@" ;;
+  *)
+    echo "dbq: unsupported scheme in '$entry' (mongodb, mysql, redis)" >&2; exit 1 ;;
+esac

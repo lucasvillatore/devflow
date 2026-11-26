@@ -15,10 +15,6 @@ Not built for now: the user asks for the implementation directly ("implement Tas
 - Closing: Task `done`, its box checked in the Planning, `log.md` entry with the commit hash; `blocked` with the reason when stopped.
 - Parallel Tasks in worktrees: later (the worktree starts from the default branch, not the Task's).
 
-## awsq and dbq (investigate, v0)
-
-Move the scripts into the plugin's `bin/`, company data (AWS profiles, database names) into `<vault>/devflow/investigate/`, credentials stay in `pass`.
-
 ## Personal layer (`ai-setup`)
 
 A personal git repo that travels between the user's machines: preferences in `AGENTS.md` (open format, any harness), `CLAUDE.md` with only `@AGENTS.md`, personal hooks in `hooks/`, and the devflow config (`devflow.json`) instead of `~/.config/devflow/config.json`. Until then, guardrails are written straight into `~/.claude` (global) or the repository's `.claude/` (local).
