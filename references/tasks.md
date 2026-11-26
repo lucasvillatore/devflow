@@ -1,6 +1,6 @@
 # Tasks
 
-How devflow skills write and close Tasks in a workspace (`references/workspace.md`). Every skill that creates Tasks follows this, so the Planning, the numbering and the log stay consistent.
+How devflow skills write and close Tasks in a workspace (`references/workspace.md`). Read `~/.config/devflow/config.json` (`vault`, `language`) before writing: names and headings follow the configured language. Every skill that creates Tasks follows this, so the Planning, the numbering and the log stay consistent.
 
 ## The Planning
 
@@ -17,6 +17,7 @@ How devflow skills write and close Tasks in a workspace (`references/workspace.m
 - Add each new Task to the Planning's checklist.
 - Add one `log.md` entry on top: `## YYYY-MM-DD` and `**Plan**: <n> Tasks created (<repositories>)`, or `**Replan**` when Tasks are added to an existing Planning.
 - Never rewrite a Task with `status: done`, nor uncheck it. Before changing a Task that is `todo`, `doing` or `blocked`, show the change and wait for confirmation.
+- **The Planning is the exception**: adding Tasks to its checklist and ticking boxes are always allowed, and a re-plan reopens it (`status: doing`), updates its Context and How, and closes it again (`done`).
 
 ## Closing a Task
 

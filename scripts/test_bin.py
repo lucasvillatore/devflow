@@ -5,6 +5,7 @@ Usage: python3 test_bin.py
 """
 import json
 import os
+import shutil
 import stat
 import subprocess
 import tempfile
@@ -27,7 +28,11 @@ with tempfile.TemporaryDirectory() as home:
     json.dump({"vault": vault}, open(os.path.join(home, ".config", "devflow", "config.json"), "w"))
     json.dump({"sso_session": "s", "profiles": {"stg/dev": {"profile": "p-stg", "use_for": "x"}}},
               open(os.path.join(vault, "devflow", "investigate", "aws.json"), "w"))
-    script(fakes, "aws", 'if [[ "$*" == *"sts get-caller-identity"* ]]; then exit "${FAKE_SSO:-0}"; fi\n'
+    script(fakes, "aws", 'if [[ "$*" == *"sts get-caller-identity"* ]]; then\n'
+                         '  case "$FAKE_SSO" in\n'
+                         '    expired) echo "Error loading SSO Token: Token for s does not exist" >&2; exit 255 ;;\n'
+                         '    network) echo "Could not connect to the endpoint URL" >&2; exit 255 ;;\n'
+                         '  esac; exit 0; fi\n'
                          'if [[ "$*" == *"sso login"* ]]; then echo "something went wrong"; exit 1; fi\n'
                          'echo "aws $*"; exit "${FAKE_EXIT:-0}"\n')
     script(fakes, "pass", 'case "$FAKE_PASS" in\n'
@@ -42,14 +47,31 @@ with tempfile.TemporaryDirectory() as home:
 
     r = run("awsq", "stg", "dev", "s3", "ls")
     assert r.returncode == 0 and "aws --profile p-stg s3 ls" in r.stdout, (r.returncode, r.stdout, r.stderr)
-    r = run("awsq", "stg", "dev", "s3", "ls", FAKE_SSO="255")
+    r = run("awsq", "stg", "dev", "s3", "ls", FAKE_SSO="expired")
     assert r.returncode == 75 and "session expired" in r.stderr, (r.returncode, r.stderr)
-    r = run("awsq", "status", FAKE_SSO="255")
+    r = run("awsq", "status", FAKE_SSO="expired")
     assert r.returncode == 75, r.returncode
     r = run("awsq", "stg", "dev", "s3", "bad", FAKE_EXIT="2")
     assert r.returncode == 2 and "expired" not in r.stderr, (r.returncode, r.stderr)
-    r = run("awsq", "login", FAKE_SSO="255")
+    r = run("awsq", "login", FAKE_SSO="expired")
     assert r.returncode == 1 and "could not start the login" in r.stderr and "something went wrong" in r.stderr, (r.returncode, r.stderr)
+    r = run("awsq", "stg", "dev", "s3", "ls", FAKE_SSO="network")
+    assert r.returncode == 1 and "not an expired session" in r.stderr and "Could not connect" in r.stderr, (r.returncode, r.stderr)
+    r = run("awsq", "status", FAKE_SSO="network")
+    assert r.returncode == 1, r.returncode
+    aws_json = os.path.join(vault, "devflow", "investigate", "aws.json")
+    os.rename(aws_json, aws_json + ".off")
+    r = run("awsq", "status")
+    assert r.returncode == 1 and "no AWS profiles" in r.stderr and "expired" not in r.stdout, (r.returncode, r.stdout, r.stderr)
+    os.rename(aws_json + ".off", aws_json)
+    no_aws = os.path.join(home, "noaws")
+    os.makedirs(no_aws)
+    for tool in ("bash", "python3", "grep", "head", "sed", "dirname", "env"):
+        found = shutil.which(tool)
+        if found:
+            os.symlink(found, os.path.join(no_aws, tool))
+    r = run("awsq", "status", PATH=no_aws)
+    assert r.returncode == 1 and "not installed" in r.stderr, (r.returncode, r.stderr)
     r = run("awsq", "prod", "x", "s3", "ls")
     assert r.returncode == 1 and "unknown profile" in r.stderr
 
@@ -60,4 +82,4 @@ with tempfile.TemporaryDirectory() as home:
     r = run("dbq", "shop", "stg", "cache", FAKE_PASS="gpg")
     assert r.returncode == 1 and "could not read" in r.stderr and "decryption failed" in r.stderr and "not in the pass store" not in r.stderr, r.stderr
 
-print("ok: awsq maps profiles, exits 75 only on an expired session, passes aws errors through, reports a failed login; dbq tells a missing entry from a GPG failure")
+print("ok: awsq maps profiles, exits 75 only on an expired session (not on network, config or missing-aws errors), passes aws errors through, reports a failed login; dbq tells a missing entry from a GPG failure")

@@ -6,6 +6,8 @@ argument-hint: "<function or class> [workspace] [why you want it refactored]"
 
 # Refactor with proof
 
+Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the configured language.
+
 **Experimental**: the user is still testing it. End by asking what was useful.
 
 A refactoring changes the structure, never the contract. This skill works on **one function or one class**; a project goes through `/devflow:refactor-plan`, which turns it into Tasks that come back here one by one. Every claim of "same behavior" needs evidence produced by running things. The scripts are at the root of this plugin (two levels above this skill's directory): `scripts/tools.py`, `scripts/complexity.py`, `scripts/equivalence.py`; and the references `references/refactor-contracts.md` (what the contract is at each level) and `references/refactor-moves.md` (problem → move).

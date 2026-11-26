@@ -20,7 +20,7 @@ From the workspace (`references/workspace.md` at the root of this plugin (two le
 - **the analysis**: every `type: Analysis` file (`/devflow:analyze`): the map and the code findings, neutral about the problem;
 - **the investigation**: the `type: Investigation` file when it exists (`/devflow:investigate-issue`): facts with evidence, such as the reproduction, outputs, data, logs.
 
-Say which inputs you have. Ignore facts struck out under the investigation's Corrections. When the investigation says the **premise was not confirmed**, the verdict is that: say the reported behavior was not reproduced, with the evidence, and what would make it true; do not look for a cause anyway. With neither analysis nor investigation, stop and suggest `/devflow:analyze` (to read the code) and `/devflow:investigate-issue` (to get facts).
+Say which inputs you have. Ignore facts struck out under the investigation's Corrections section (headings in the configured language, e.g. "Correções", "Premissa"). When the investigation says the **premise was not confirmed**, the verdict is that: say the reported behavior was not reproduced, with the evidence, and what would make it true; do not look for a cause anyway. With neither analysis nor investigation, stop and suggest `/devflow:analyze` (to read the code) and `/devflow:investigate-issue` (to get facts).
 
 ## Steps
 

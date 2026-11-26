@@ -9,7 +9,7 @@ A local development workflow for Claude Code, built to grow one Component at a t
 | Plugin | skills, agents, scripts, templates | this repo |
 | Vault | company/team knowledge: glossary, conventions, repository profiles, investigate data | configured in the setup |
 | Config | active Components, template language, Vault path | `~/.config/devflow/config.json` |
-| Machine | `~/.claude`, `~/.aws`, `~/.local/bin` | written only by the setup |
+| Machine | `~/.claude` (CLAUDE.md block, settings) | written only by the setup; `bin/` reaches the PATH through the plugin |
 
 Work happens in a workspace, `<vault>/issues/<ISSUE-KEY or name>/` (git-ignored), so it can be browsed in Obsidian.
 

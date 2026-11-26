@@ -68,6 +68,18 @@ for language in ("pt-BR", "en"):
         r = run(home, "apply", "--language", language, "--vault", vault, "--areas", "issue")
         assert r.returncode == 0, r.stderr
 
+        status = json.loads(run(home, "status").stdout)
+        assert status["up_to_date"] is True and status["config"]["language"] == language, status
+        assert "lizard" in status["tools"] and "stryker" not in status["tools"], status["tools"]
+
+        other = "en" if language == "pt-BR" else "pt-BR"
+        before = sorted(os.listdir(vault))
+        r = run(home, "apply", "--language", other, "--vault", vault, "--areas", "issue")
+        assert r.returncode == 0 and f"knowledge base is in {language}" in r.stdout, r.stdout
+        assert sorted(os.listdir(vault)) == before, "changing the language copied another skeleton into the Vault"
+        assert run(home, "check").stdout == ""
+        run(home, "apply", "--language", language, "--vault", vault, "--areas", "issue")
+
         v = subprocess.run([sys.executable, os.path.join(HERE, "kb_verify.py"), "--base", vault], capture_output=True, text=True)
         assert v.returncode == 0, v.stdout
-    print(f"ok {language}: dry run, apply, idempotence, foreign settings kept, check, vault verifies")
+    print(f"ok {language}: dry run, apply, idempotence, foreign settings kept, check, status, language switch, vault verifies")

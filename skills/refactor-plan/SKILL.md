@@ -6,6 +6,8 @@ argument-hint: "<project or path> [workspace] [why you want it refactored]"
 
 # Plan a refactoring
 
+Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the configured language.
+
 **Experimental**: the user is still testing it. End by asking what was useful.
 
 No production code changes here: this skill measures, prioritizes, pins the external contract and writes Tasks. Each Task is later done by `/devflow:refactor` with its own proof.
@@ -24,6 +26,6 @@ The scripts and references are at the root of this plugin (two levels above this
 
 5. **Candidates.** Apply "Is it worth it?" from `references/refactor-moves.md` to the project and to each candidate: the user's reason, when given, is a premise to verify first (e.g. "adding a new type touches many modules": count them); candidates below the limit (repository profile, default CCN 10) with no problem from the table and no confirmed reason stay out. When nothing is left, the answer is **"the project is healthy, nothing to prioritize"**, with the complexity distribution as evidence, and no Tasks are written. For each remaining candidate: the target (function or class), the problems and the moves from `references/refactor-moves.md`, the contract it must keep, the expected gain (CCN before → target), the risk, and the effort. Changes that cross the contract go as expand-contract (expand, migrate in batches, contract), one Task per step. Show the list and iterate with the user on order and granularity.
 
-6. **Write the Tasks** following `references/tasks.md`: the Planning first when there is none (its Context points to `<evidence>/plan.md`), numbering after it, the checklist and the `**Plan**` log entry. One Task per refactoring, What = target and moves, How = the contract and the proof expected, Acceptance criteria = tests green, `EQUIVALENT`, CCN target reached, border contract tests green. `depends_on` for the order (the border tests first; expand before migrate before contract). Record the plan in `<evidence>/plan.md` with the baseline numbers and the reasoning.
+6. **Write the Tasks** following `references/tasks.md`: the Planning first when there is none (its Context points to `<evidence>/plan.md`), numbering after it, the checklist and the `**Plan**` log entry (`**Replan**` when a Planning already exists). One Task per refactoring, What = target and moves, How = the contract and the proof expected, Acceptance criteria = tests green, `EQUIVALENT`, CCN target reached, border contract tests green. `depends_on` for the order (the border tests first; expand before migrate before contract). Record the plan in `<evidence>/plan.md` with the baseline numbers and the reasoning.
 
 7. **Answer**: the baseline, the top hot spots, the border tests proposed, and the Tasks in order. Each Task is done with `/devflow:refactor <target> <workspace>`. Then ask what was useful.

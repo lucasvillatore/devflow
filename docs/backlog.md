@@ -12,13 +12,13 @@ Based on Matt Pocock's skills of the same name, with Jira (from `tracker.md`) in
 
 Open questions: does the user create epics and stories in Jira, or does that go through the PO (then generate text to paste instead of publishing)? Does the user triage bugs? Mapping of states to Jira statuses or labels, and of "blocked by" to the Jira link type.
 
-## Review fixes (maintenance, independent review 2026-11-26)
+## Review fixes (maintenance, independent reviews 2026-11-26)
 
-An agent that did not take part in building devflow reviewed the whole repository (24 findings). All fixed except:
+Two reviews by agents that did not build devflow: 24 findings, then 22. All fixed except:
 
-- **9** (medium): `setup.py check` flags any template file the user deleted or renamed, forever, and `apply` brings back the default folders. Leave content folders out of `check` (or record the files created and treat deleted ones as intended).
+- **9 of the first review** (medium): `setup.py check` flags any template file the user deleted or renamed, forever, and `apply` brings back the default folders. Leave content folders out of `check` (or record the files created and treat deleted ones as intended).
 
-Structural notes still open: README, backlog and CONTEXT drift from components.json over time (the README now points to the catalog instead of listing skills).
+Structural notes still open: facts copied by hand drift (the workspace contract table is now the single source, read by `overview.py`; Task and log rules live in `references/tasks.md`); skills' use of tools (AskUserQuestion limits, exit codes) has no automated test.
 
 ## Visual views (beyond draw)
 
@@ -54,7 +54,7 @@ Not built for now: the user asks for the implementation directly ("implement Tas
 - Two stops: before implementing (what changes and why) and before committing (summary and message). No push.
 - Files changed outside the Task: list them and ask; never revert without confirmation.
 - Questions settled during the Task go to a "Decisions" section at the end of the Task file.
-- Closing: Task `done`, its box checked in the Planning, `log.md` entry with the commit hash; `blocked` with the reason when stopped.
+- Closing: Task `done`, its box checked in the Planning; `blocked` with the reason when stopped.
 - Parallel Tasks in worktrees: later (the worktree starts from the default branch, not the Task's).
 - Pausing: when the session ends in the middle of a Task, write a "Where I stopped" section in the Task file (what is done, what was tried and failed and why, what is left), so a fresh session resumes from it. This replaces a separate handoff skill (Matt Pocock's `handoff`): the Issue workspace already carries everything else between sessions.
 
@@ -102,7 +102,7 @@ Investigate component, once the connector authentication works.
 
 ## Issue trackers other than Jira
 
-`pick-issue` is Jira-only; `0-issue.md` stays tracker-agnostic so others can be added.
+`pick-issue` is Jira-only; `index.md` stays tracker-agnostic so others can be added.
 
 ## Company-specific kb configuration
 

@@ -52,4 +52,4 @@ Wait for all of them. Do not research in parallel yourself.
 ## Afterwards
 
 - Every format, naming or style correction from the user becomes a convention in `.kb/` (see `kb-process.md`).
-- When the user approves, use the `kb-close` skill.
+- When the user approves, tell them to run `/devflow:kb-close <context>`.

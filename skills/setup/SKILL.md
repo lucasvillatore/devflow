@@ -17,8 +17,8 @@ Use the question tool with selectable options (AskUserQuestion) for every choice
 2. **What to change.** One multi-select question: language, Vault, Areas, or nothing (only looking). "Nothing" ends here; if `up_to_date` is false, offer to just re-apply the current config instead.
 
 3. **Ask only what was picked**, each as options, with the current value marked "(current)":
-   - **Language**: one option per entry of `languages`. It sets the language of the Vault templates and of every artifact devflow generates.
-   - **Vault**: "keep `<current path>`" (Recommended), plus the "Other" answer for a new path. For a new path, say whether it exists and whether it has a `.kb/`.
+   - **Language**: one option per entry of `languages`. It sets the language of every artifact devflow generates (workspaces, PRs, diagrams) and of a **new** Vault's skeleton. An existing Vault keeps the language of its knowledge base (`.kb/base.yaml`): changing this setting never converts or duplicates it, and the dry run says so; tell the user before they pick.
+   - **Vault**: always at least two options (the tool needs two to four): with a config, "keep `<current path>`" (Recommended) and "`~/vault`"; on a first setup, "`~/vault`" (Recommended) and "`~/Documents/vault`". The tool's "Other" answer takes any other path. For the chosen path, say whether it exists and whether it has a `.kb/` (and in which language).
    - **Areas**: multi-select with one option per Area (at most four per question: split into two questions when needed), each with its skills in the description and the current state; required Areas are not offered (always on). A turned-off Area's skills are not used by Claude on its own; the user can still type them.
    Values not asked keep their current value.
 

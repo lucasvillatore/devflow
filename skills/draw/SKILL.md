@@ -6,6 +6,8 @@ argument-hint: "<function, file, flow, ISSUE-KEY or workspace name> | before/aft
 
 # Draw
 
+Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the configured language.
+
 **Experimental**: the user is still testing whether diagrams help them read. Keep each diagram small and end by asking what helped and what did not.
 
 The goal is understanding at a glance: concepts and how they connect, in the user's domain language, not a line-by-line flowchart.

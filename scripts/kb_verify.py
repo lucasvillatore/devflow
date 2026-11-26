@@ -89,6 +89,9 @@ def check_file(path, rel, cfg, problems):
             types = cfg.get("types", {})
             valid = [t for t, d in types.items() if not (d or {}).get("template_only")]
             doc_type = fm.get("type")
+            if doc_type is not None and not isinstance(doc_type, str):
+                error(f"type must be a single text value, not {type(doc_type).__name__}")
+                doc_type = None
             if doc_type and doc_type not in valid:
                 error(f"type '{doc_type}' is not in the configuration ({', '.join(valid)})")
             status = fm.get("status")

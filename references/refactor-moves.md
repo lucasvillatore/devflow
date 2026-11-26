@@ -26,7 +26,7 @@ Refactoring working code always carries risk, so "nothing to refactor" is a vali
 A reason that cannot be measured ("the team does it differently") rests on a Vault convention when one exists; otherwise it is an opinion. Say which, and let the user decide.
 
 **Without a reason from the user**, the code has to justify it:
-- **numbers**: CCN and size above the limit. Default limit: CCN 10 per function; a repository profile may set its own (`Complexity limit`);
+- **numbers**: CCN and size above the limit. Default limit: CCN 10 per function; a repository profile may set its own (`Complexity limit`, named in the Vault's language: `Limite de complexidade` in pt-BR);
 - **problems**: each row of the table above checked, present or absent, with evidence;
 - **context**: how often the code changes; stable code nobody touches pays off little.
 

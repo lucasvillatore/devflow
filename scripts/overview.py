@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Build a visual overview of devflow (Areas, flows, workspace files) as a zoomable page.
 
-Usage: python3 overview.py [--out <file.html>] [--open]
+Usage: python3 overview.py [--out <file.html>] [--open] [--language en|pt-BR]
 
 The Areas come from components.json; the flows are described below. The page is written in the language
-of ~/.config/devflow/config.json (en when missing), by default to <vault>/devflow/overview.html.
+of ~/.config/devflow/config.json (en when missing), by default to <vault>/issues/overview.html (git-ignored: it shows this machine's Areas).
 Standard library only.
 """
 import json
@@ -69,19 +69,19 @@ FLOW_SHAPE = {
     "improve": {"classes": {}, "edges": [(0, 1), (0, 2), (0, 3), (3, 4)]},
 }
 
-# Who writes (w) and reads (r) each workspace file.
-CONTRACTS = {
-    "pick-issue": {"w": ["Issue", "log"]},
-    "plan-issue": {"w": ["Task", "log"], "r": ["Issue", "Analysis", "Investigation", "Diagnosis"]},
-    "analyze": {"w": ["Analysis"]},
-    "investigate-issue": {"w": ["Investigation"], "r": ["Issue", "Analysis"]},
-    "diagnose": {"w": ["Diagnosis"], "r": ["Issue", "Analysis", "Investigation"]},
-    "draw": {"w": ["diagrams"], "r": ["Analysis", "Investigation", "Diagnosis"]},
-    "refactor-plan": {"w": ["Task", "log"]},
-    "refactor": {"w": ["Refactor"], "r": ["Task", "Analysis"]},
-    "open-pr": {"w": ["log"], "r": ["Issue", "Task", "Diagnosis", "Investigation", "Refactor"]},
-    "retro": {"w": ["Retro"], "r": ["Investigation"]},
-}
+def contracts():
+    """Who writes (w) and reads (r) each workspace file, from the table in references/workspace.md."""
+    result = {}
+    with open(os.path.join(PLUGIN, "references", "workspace.md"), encoding="utf-8") as handle:
+        for line in handle:
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) != 4 or not cells[0].startswith("`"):
+                continue
+            kind = cells[0].strip("`").rstrip("/").removesuffix(".md")
+            for role, column in (("w", cells[2]), ("r", cells[3])):
+                for skill in [x.strip() for x in column.split(",") if x.strip()]:
+                    result.setdefault(skill, {}).setdefault(role, []).append(kind)
+    return result
 
 
 def config():
@@ -108,11 +108,12 @@ def areas_diagram(t, active):
     order += [n for n in areas if n not in order]
     for name in order:
         area = areas[name]
-        state = t["required"] if area.get("required") else ("" if name in active or name == "experimental" else t["off"])
+        state = t["required"] if area.get("required") else ("" if name in active else t["off"])
         title = f"{name}<br/>({state})" if state else name
         lines.append(f'  A_{node(name)}["<b>{label(title)}</b>"]:::area')
         for skill in area.get("skills", []) or [t["none"]]:
-            cls = ":::wait" if name == "experimental" else (":::skip" if name not in active and not area.get("required") else ":::info")
+            off = name not in active and not area.get("required")
+            cls = ":::skip" if off else (":::wait" if name == "experimental" else ":::info")
             lines.append(f'  S_{node(name)}_{node(skill)}["{label(skill)}"]{cls}')
             lines.append(f"  A_{node(name)} --- S_{node(name)}_{node(skill)}")
     return "\n".join(lines) + "\n" + CLASSES + "\n  classDef area fill:#fffbe6,stroke:#9a8a2a,color:#2a2410"
@@ -134,7 +135,7 @@ def files_diagram(t):
     lines = ["flowchart LR"]
     for kind, text in t["labels"].items():
         lines.append(f'  D_{kind}[("{label(text)}")]:::file')
-    for skill, rw in CONTRACTS.items():
+    for skill, rw in contracts().items():
         cls = ":::wait" if skill in ("analyze", "investigate-issue", "diagnose", "draw", "refactor", "refactor-plan") else ":::info"
         lines.append(f'  K_{node(skill)}["{skill}"]{cls}')
         for kind in rw.get("w", []):
@@ -145,14 +146,16 @@ def files_diagram(t):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--out", help="where to write the page (default: <vault>/issues/overview.html, git-ignored)")
+    parser.add_argument("--open", action="store_true", help="open the page in the browser")
+    parser.add_argument("--language", help="override the configured language")
+    args = parser.parse_args()
     cfg = config()
-    t = TEXT.get(cfg.get("language"), TEXT["en"])
-    out = None
-    if "--out" in sys.argv:
-        out = sys.argv[sys.argv.index("--out") + 1]
-    elif cfg.get("vault"):
-        out = os.path.join(cfg["vault"], "devflow", "overview.html")
-    else:
+    t = TEXT.get(args.language or cfg.get("language"), TEXT["en"])
+    out = args.out or (os.path.join(cfg["vault"], "issues", "overview.html") if cfg.get("vault") else None)
+    if not out:
         sys.exit("no Vault configured: pass --out <file.html>")
     active = set(cfg.get("areas", []))
     diagrams = [{"title": t["areas"], "mermaid": areas_diagram(t, active), "legend": t["areas_legend"]}]
@@ -163,7 +166,7 @@ def main():
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as handle:
         json.dump(data, handle, ensure_ascii=False)
         path = handle.name
-    command = [sys.executable, os.path.join(PLUGIN, "scripts", "draw_view.py"), path, out] + (["--open"] if "--open" in sys.argv else [])
+    command = [sys.executable, os.path.join(PLUGIN, "scripts", "draw_view.py"), path, out] + (["--open"] if args.open else [])
     result = subprocess.run(command)
     os.unlink(path)
     sys.exit(result.returncode)

@@ -58,9 +58,11 @@ CASES = {
             "Business contexts/Y/Not a map.md": "---\njust a line\n---\n# Rule\nx\n",
             "Business contexts/Y/Empty front.md": "---\n\n---\n# Rule\nx\n",
             "Business contexts/Y/index.md": "---\na: [\n---\n",
+            "Business contexts/Y/List type.md": "---\ntype: [Term]\ntitle: L\ndescription: d\nstatus: active\ntimestamp: 2026-01-15\n---\n# Term\nx\n",
         },
         "expected": [
             "frontmatter is not a list of fields",
+            "type must be a single text value",
             "Empty front.md: missing required field: type",
             "Business contexts/Y/index.md: invalid YAML frontmatter",
             "No example.md: missing required section of template 'Business rule': # Example",

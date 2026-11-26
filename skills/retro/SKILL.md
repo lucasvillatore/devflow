@@ -14,7 +14,7 @@ Look back at this session and turn what went wrong into lasting fixes to the env
 ## Before starting
 
 - Read `~/.config/devflow/config.json` (`vault`). Without it, skip the Vault parts and say so.
-- The evidence is this conversation. If it was compacted and the summary is not enough, read the session transcript: the newest `.jsonl` in `~/.claude/projects/<working directory with / replaced by ->/`. Read only what you need.
+- The evidence is this conversation. If it was compacted and the summary is not enough, read the session transcript: the newest `.jsonl` in the folder of `~/.claude/projects/` that matches the working directory (Claude Code replaces every character that is not a letter or digit with `-`, so `/home/a_b/x` becomes `-home-a-b-x`; list the folder to find it). Read only what you need.
 - The workspace (an Issue key or a name, `references/workspace.md`) comes from the argument or the conversation, when there is one.
 
 ## 1. Find the candidates
@@ -31,7 +31,7 @@ Go through the session looking for:
 - **Steering files**: instructions in `~/.claude/CLAUDE.md`, `~/.claude/rules/`, the repository's `CLAUDE.md` or the Vault conventions that were ignored, contradicted each other, or change nothing (no-ops). Large steering files are a finding by themselves.
 - **Visual explanation**: understanding cost a lot of reading where a diagram would have done it: a long block read to understand it (a function of hundreds of lines, several files in a row), the same structure explained more than once or the user asking to explain again, a flow between systems followed in the conversation (service → queue → job → database).
 - **devflow gaps**: a skill missing a step, asking the wrong thing, or a step the user had to do by hand every time.
-- **Corrections recorded in the workspace**: the "Corrections" section of the `type: Investigation` file (and facts struck out in other files; find workspace files by `type`, see `references/workspace.md` at the root of this plugin (two levels above this skill's directory)). Each one is a lesson: find why the first reading failed (a misleading field, a log in another place, the Issue's wording taken as fact) and where the fix goes so it does not happen again.
+- **Corrections recorded in the workspace**: the Corrections section of the `type: Investigation` file (heading in the configured language, e.g. "Correções") (and facts struck out in other files; find workspace files by `type`, see `references/workspace.md` at the root of this plugin (two levels above this skill's directory)). Each one is a lesson: find why the first reading failed (a misleading field, a log in another place, the Issue's wording taken as fact) and where the fix goes so it does not happen again.
 - **Missing knowledge**: facts the session had to discover that are not in the Vault. Look in particular for:
   - **diverging terms**: a term used differently from the glossary, or two names for the same thing (a candidate for a glossary entry or a flagged ambiguity);
   - **walked paths**: a flow followed end to end while investigating (e.g. cart → coupon → price calculation) that is not a journey, or is a step missing from an existing journey;

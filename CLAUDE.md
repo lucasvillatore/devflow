@@ -35,7 +35,7 @@ Then classify the request: it **exists** (point to it), it **extends** something
 | A skill | `skills/<name>/SKILL.md` (frontmatter `name`, `description` with when to use it, optional `argument-hint`, `disable-model-invocation: true` for user-only skills); register it in `components.json` under its Area |
 | Plugin files from a skill | referred to as "at the root of this plugin (two levels above this skill's directory)" |
 | A shared procedure or catalog | `references/` |
-| A script | `scripts/<name>.py` plus `scripts/test_<name>.py` |
+| A script | `scripts/<name>.py`, covered by a test in `scripts/test_*.py` (its own, or a shared one like `test_scripts.py`) |
 | A command on the user's PATH | `bin/` |
 | An external tool | an entry in `tools.json` (`devflow`, `user` or `project` kind); never install a project tool |
 | Vault files | `templates/vault/pt-BR/` **and** `templates/vault/en/`; `setup.py check` flags machines missing them, `setup.py apply` adds them |
@@ -49,7 +49,7 @@ Then classify the request: it **exists** (point to it), it **extends** something
 Run every test:
 
 ```bash
-python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py && python3 scripts/test_guardrail.py && python3 scripts/test_refactor_tools.py && python3 scripts/test_bin.py
+python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py && python3 scripts/test_guardrail.py && python3 scripts/test_refactor_tools.py && python3 scripts/test_bin.py && python3 scripts/test_scripts.py
 ```
 
 Check that `python3 scripts/catalog.py` lists the change in the right Area. When a change affects the user's machine (the CLAUDE.md block from `references/flow.md`, settings, new Vault files), say so: the user runs `/devflow:setup` or the setup script applies it. Commit and push only when the user asks.

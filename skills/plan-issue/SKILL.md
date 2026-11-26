@@ -20,7 +20,7 @@ Read `references/grilling.md` and the templates in `templates/issue/<language>/`
 ## Files
 
 - `1-planning.md` (title in the configured language, e.g. `1-planejamento.md` for pt-BR) from `planning.md`. It is a Task too.
-- One file per Task from `task.md`, named `<N>-<slug>.md`: `N` is the next free number in the folder, `slug` is short kebab-case in the configured language.
+- One file per Task from `task.md`, named `<N>-<slug>.md`: `N` follows `references/tasks.md` (after the highest existing number, never 1), `slug` is short kebab-case in the configured language.
 - Links between files are Obsidian wikilinks without extension: `[[2-adjust-query]]`.
 
 ## Steps

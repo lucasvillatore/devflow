@@ -92,14 +92,30 @@ def up_to_date(config):
 
 def tools_status():
     import subprocess
-    result = subprocess.run([sys.executable, os.path.join(PLUGIN, "scripts", "tools.py"), "check"], capture_output=True, text=True)
+    registry = read_json(os.path.join(PLUGIN, "tools.json"), {})
+    names = [name for name, tool in registry.items() if tool.get("kind") != "project"]
+    if not names:
+        return {}
     try:
-        return {name: info["installed"] for name, info in json.loads(result.stdout).items() if info["kind"] != "project"}
+        result = subprocess.run([sys.executable, os.path.join(PLUGIN, "scripts", "tools.py"), "check", *names],
+                                capture_output=True, text=True, timeout=30)
+    except subprocess.TimeoutExpired:
+        return {name: "unknown (check timed out)" for name in names}
+    try:
+        return {name: info["installed"] for name, info in json.loads(result.stdout).items()}
     except ValueError:
         return {}
 
 
+def vault_language(vault, default):
+    """The language of an existing Vault's knowledge base (its .kb/base.yaml), or the default."""
+    import re
+    match = re.search(r"^language:\s*([\w-]+)", read_text(os.path.join(vault, ".kb", "base.yaml")), re.M)
+    return match.group(1) if match and match.group(1) in languages() else default
+
+
 def vault_plan(language, vault):
+    language = vault_language(vault, language)
     source = os.path.join(PLUGIN, "templates", "vault", language)
     missing = []
     for root, _, names in os.walk(source):
@@ -191,6 +207,10 @@ def apply(args):
     print("== config:", CONFIG)
     print(diff("config.json", json.dumps(config_old, indent=2) + "\n" if config_old else "", json.dumps(config_new, indent=2) + "\n") or "(no change)")
     print("== vault:", vault, "(exists)" if os.path.isdir(vault) else "(will be created)")
+    kb_language = vault_language(vault, args.language)
+    if kb_language != args.language:
+        print(f"NOTE: the Vault's knowledge base is in {kb_language}; it stays in {kb_language}. "
+              f"Only the files devflow generates (workspaces, PRs, diagrams) will be in {args.language}.")
     print("\n".join(f"  + {rel}" for _, rel in missing) or "  (nothing missing)")
     print("== settings:", SETTINGS)
     print(diff("settings.json", json.dumps(settings_old, indent=2) + "\n", json.dumps(settings_new, indent=2) + "\n") or "(no change)")

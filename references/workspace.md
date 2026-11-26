@@ -29,14 +29,18 @@ Files and folders that skills create in a workspace are named in the configured 
 
 Find workspace files by their frontmatter `type`, never by file name: names follow the configured language (`investigation.md` is `investigacao.md` in pt-BR) and may change. When linking one file from another, use its real file name in the wikilink.
 
-| type | What | Written by |
-| :-- | :-- | :-- |
-| `Issue` | `index.md`: the Issue or the work | pick-issue, or whoever creates the workspace |
-| `Task` | one Task; the **Planning** is the Task whose file name starts with `1-` | plan-issue, refactor-plan (`references/tasks.md`) |
-| `Analysis` | map and findings of a target | analyze |
-| `Investigation` | facts, signal, corrections | investigate-issue |
-| `Diagnosis` | verdict on the problem | diagnose |
-| `Refactor` | proof of one refactoring | refactor |
-| `Retro` | retrospective of a session | retro |
+This table is the single source of who writes and reads what (`scripts/overview.py` draws it; keep the last two columns as plain lists of skill names).
 
-`log.md` has no frontmatter. Folders (`diagrams/`, `scripts/`, `refactor/`) hold supporting files, not typed documents.
+| type | What | Written by | Read by |
+| :-- | :-- | :-- | :-- |
+| `Issue` | `index.md`: the Issue or the work (created by pick-issue, or by whichever skill opens the workspace) | pick-issue | plan-issue, investigate-issue, diagnose, open-pr |
+| `Task` | one Task; the **Planning** is the Task whose file name starts with `1-` (rules in `references/tasks.md`) | plan-issue, refactor-plan, refactor | plan-issue, refactor, open-pr |
+| `Analysis` | map and findings of a target | analyze | investigate-issue, diagnose, draw, plan-issue, refactor, refactor-plan |
+| `Investigation` | facts, signal, premise, corrections | investigate-issue | diagnose, draw, plan-issue, open-pr, retro |
+| `Diagnosis` | verdict on the problem | diagnose | draw, plan-issue, open-pr |
+| `Refactor` | proof of one refactoring | refactor | open-pr |
+| `Retro` | retrospective of a session | retro | |
+| `log.md` | dated changes to the Issue (no frontmatter) | pick-issue, plan-issue, refactor-plan, open-pr | plan-issue |
+| `diagrams/` | zoomable pages and their data | draw | |
+
+`log.md` has no frontmatter. Folders (`diagrams/`, `scripts/`, `refactor/`, `refactor-plan/`) hold supporting files, not typed documents; `refactor-plan/plan.md` is the refactor plan's own record.

@@ -52,14 +52,30 @@ elif what == "list":
 PY
 }
 
-session_valid() {
-  local check
-  check=$(config_get check)
-  [[ -n "$check" ]] && aws sts get-caller-identity --profile "$check" >/dev/null 2>&1
+# Prints "valid" or "expired". Any other problem (aws missing, bad config, a broken profile, no network)
+# is not an expired session: it prints the reason and exits 1, so callers never mistake it for 75.
+session_state() {
+  command -v aws >/dev/null 2>&1 || { echo "awsq: the aws CLI is not installed" >&2; exit 1; }
+  local check err
+  check=$(config_get check) || exit 1
+  [[ -n "$check" ]] || { echo "awsq: aws.json has no profiles" >&2; exit 1; }
+  if err=$(aws sts get-caller-identity --profile "$check" 2>&1 >/dev/null); then
+    echo valid
+    return
+  fi
+  if grep -qiE "token|expired|sso session" <<<"$err"; then
+    echo expired
+    return
+  fi
+  echo "awsq: checking the SSO session with profile $check failed (not an expired session):" >&2
+  head -n3 <<<"$err" >&2
+  exit 1
 }
 
 cmd_status() {
-  if session_valid; then
+  local state
+  state=$(session_state) || exit 1
+  if [[ "$state" == valid ]]; then
     echo "SSO: session valid"
   else
     echo "SSO: session expired (run: awsq login)"
@@ -68,7 +84,9 @@ cmd_status() {
 }
 
 cmd_login() {
-  if session_valid; then
+  local state
+  state=$(session_state) || exit 1
+  if [[ "$state" == valid ]]; then
     echo "SSO: session already valid"
     return
   fi
@@ -112,7 +130,8 @@ case "$1" in
       exit 1
     fi
     shift 2
-    if ! session_valid; then
+    state=$(session_state) || exit 1
+    if [[ "$state" != valid ]]; then
       echo "SSO: session expired. Run 'awsq login' and approve the link." >&2
       exit "$EXPIRED"
     fi

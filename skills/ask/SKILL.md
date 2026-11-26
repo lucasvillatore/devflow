@@ -32,7 +32,7 @@ argument-hint: "[question]"
 
    Opening it on GitHub automatically is not available yet: the user copies it, or explicitly asks you to run `gh issue create` on the repository.
 
-For a visual overview (Areas, the usual flows, the workspace files), run `python3 <plugin>/scripts/overview.py --open`: it writes `<vault>/devflow/overview.html` in the user's language and opens it.
+For a visual overview (Areas, the usual flows, the workspace files), run `python3 <plugin>/scripts/overview.py --open`: it writes `<vault>/issues/overview.html` (git-ignored) in the user's language and opens it.
 
 ## Rules
 
