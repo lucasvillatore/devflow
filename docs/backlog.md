@@ -2,6 +2,10 @@
 
 Items deferred on purpose, and the v0 Components not built yet.
 
+## investigate-issue (investigate)
+
+A step between `pick-issue` and `plan-issue` for Issues whose cause is not known yet: planning asked questions the user could not answer before understanding how the system works. Explores on purpose (code in the Issue's `paths`, `awsq`/`dbq` read-only, reproduction), based on Matt Pocock's `diagnosing-bugs` (a red-capable feedback loop before any hypothesis). Writes `issues/<KEY>/investigation.md` (not a Task): how it works today with `file:line` evidence marked confirmed or inferred, reproduction, root cause or live hypotheses, open questions, knowledge to record. `plan-issue` reads it, and offers to pause and investigate when the user answers "I don't know". Also usable without an Issue.
+
 ## dev-task (development)
 
 Not built for now: the user asks for the implementation directly ("implement Task 2 of ABC-123"). Build it if keeping statuses, validation and commits consistent by hand gets tiresome. Draft decisions:
@@ -48,12 +52,6 @@ The current personal hooks are in `~/.claude/hooks/` (`guardrails.py` plus 6 rul
 ## Review stage (development)
 
 A reviewer agent that reads only the diff and enforces judgement-call conventions from the Vault, so the implementing agent does not carry them in context.
-
-## retro
-
-User-invoked retrospective of a session (based on Matt Pocock's `retro`): lists improvement candidates by severity, then offers to turn each into a guardrail through `add-guardrail`.
-
-It also looks for **missing knowledge**: facts the session had to discover (a business rule, a term, a repository's quirk, how to reach some data) that are not in the Vault yet, and suggests where each one goes (glossary term, business rule, repository profile, convention).
 
 ## Staging and production
 
