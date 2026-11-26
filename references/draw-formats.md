@@ -2,6 +2,8 @@
 
 The formats `/devflow:draw` can suggest. To add one, add an entry; mark it **planned** until the skill can produce it.
 
+Mermaid formats are shown in the zoomable page (`templates/draw/viewer.html`: zoom, fit, drag; published as a private Artifact or opened locally) and saved as text in the Vault.
+
 ## Mermaid flowchart (available)
 
 Text inside the `.md`; Obsidian and GitHub render it.
@@ -30,10 +32,10 @@ A `.canvas` file of cards and arrows in the Vault.
 - **Best for**: a board of notes that link to the real files (an Issue's Tasks, a context's documents).
 - **Not for**: precise control flow.
 
-## HTML page (planned)
+## Interactive HTML page (planned)
 
-A local page or a private claude.ai Artifact, like the workflow prototype.
-- **Best for**: interactive views: clicking through steps, filtering, simulating a flow.
+Beyond the zoomable page every diagram already gets: a page with behavior, like the workflow prototype.
+- **Best for**: clicking through steps, filtering, simulating a flow.
 - **Not for**: something that should live in the Vault as plain text.
 
 ## FigJam (planned)

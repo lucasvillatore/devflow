@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diagram</title>
+<style>
+  :root { --bg:#f6f6f4; --panel:#ffffff; --ink:#1c1c1e; --muted:#66666d; --line:#e2e2de; --accent:#2f5bd3; --canvas:#fbfbfa; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#141416; --panel:#1d1d20; --ink:#ececf0; --muted:#9a9aa3; --line:#2e2e33; --accent:#7d9cff; --canvas:#f4f4f2; } }
+  :root[data-theme="dark"] { --bg:#141416; --panel:#1d1d20; --ink:#ececf0; --muted:#9a9aa3; --line:#2e2e33; --accent:#7d9cff; --canvas:#f4f4f2; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 system-ui, -apple-system, sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:24px 16px 48px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .subtitle { color:var(--muted); margin:0 0 20px; }
+  section.diagram { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:20px; }
+  section.diagram h2 { font-size:16px; margin:0 0 10px; }
+  .frame { position:relative; height:68vh; min-height:320px; border:1px solid var(--line); border-radius:8px; background:var(--canvas); overflow:hidden; cursor:grab; }
+  .frame:active { cursor:grabbing; }
+  .frame svg { width:100%; height:100%; max-width:none !important; }
+  .controls { position:absolute; top:8px; right:8px; display:flex; gap:4px; z-index:2; }
+  .controls button { font:inherit; font-size:14px; min-width:34px; height:34px; border:1px solid #d0d0cc; background:#fff; color:#1c1c1e; border-radius:7px; cursor:pointer; }
+  .controls button:hover { border-color:#2f5bd3; }
+  .hint { color:var(--muted); font-size:12px; margin:6px 0 0; }
+  ul.legend { margin:12px 0 0; padding-left:18px; }
+  ul.legend li { margin:2px 0; }
+  section.explain { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin-bottom:20px; }
+  section.explain h2 { font-size:16px; margin:0 0 8px; }
+  section.explain h3 { font-size:14px; margin:14px 0 4px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+  section.explain ul { margin:0; padding-left:18px; }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width: 900px) { .pair { grid-template-columns:1fr; } }
+  code { font-family: ui-monospace, Menlo, monospace; font-size:13px; }
+</style>
+</head>
+<body>
+<main id="app"></main>
+
+<!-- DATA: replace the JSON below. Shape:
+{
+  "title": "...", "subtitle": "...",
+  "diagrams": [ { "title": "...", "mermaid": "flowchart LR\n ...", "legend": ["...", "..."], "pair": "optional group id: diagrams with the same id render side by side (before/after)" } ],
+  "explanation": [ { "heading": "...", "items": ["...", "..."] } ]
+}
+Text is plain; `code` in backticks is rendered as code. -->
+<script type="application/json" id="data">
+{"title":"Example","subtitle":"Replace the data block","diagrams":[{"title":"Example","mermaid":"flowchart LR\n  a[Start] --> b[End]","legend":["Start: where it begins"]}],"explanation":[]}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+<script>
+  const data = JSON.parse(document.getElementById("data").textContent);
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const rich = t => esc(t).replace(/`([^`]+)`/g, "<code>$1</code>");
+  document.title = data.title || "Diagram";
+  const app = document.getElementById("app");
+  app.insertAdjacentHTML("beforeend", `<h1>${esc(data.title || "")}</h1>${data.subtitle ? `<p class="subtitle">${rich(data.subtitle)}</p>` : ""}`);
+
+  const groups = [];
+  (data.diagrams || []).forEach((d, i) => {
+    const last = groups[groups.length - 1];
+    if (d.pair && last && last.pair === d.pair) last.items.push([d, i]); else groups.push({ pair: d.pair, items: [[d, i]] });
+  });
+  groups.forEach(g => {
+    const html = g.items.map(([d, i]) => `
+      <section class="diagram">
+        <h2>${esc(d.title || "")}</h2>
+        <div class="frame" id="frame-${i}">
+          <div class="controls">
+            <button data-act="in" data-i="${i}" title="Zoom in">+</button>
+            <button data-act="out" data-i="${i}" title="Zoom out">−</button>
+            <button data-act="fit" data-i="${i}" title="Fit">⤢</button>
+          </div>
+        </div>
+        <p class="hint">Scroll to zoom, drag to move.</p>
+        ${(d.legend || []).length ? `<ul class="legend">${d.legend.map(l => `<li>${rich(l)}</li>`).join("")}</ul>` : ""}
+      </section>`).join("");
+    app.insertAdjacentHTML("beforeend", g.items.length > 1 ? `<div class="pair">${html}</div>` : html);
+  });
+  (data.explanation || []).length && app.insertAdjacentHTML("beforeend", `<section class="explain">${data.explanation.map(s =>
+    `<h3>${esc(s.heading)}</h3><ul>${(s.items || []).map(it => `<li>${rich(it)}</li>`).join("")}</ul>`).join("")}</section>`);
+
+  const zooms = {};
+  mermaid.initialize({ startOnLoad: false, theme: "default", securityLevel: "strict", flowchart: { htmlLabels: true } });
+  (async () => {
+    for (const [i, d] of (data.diagrams || []).entries()) {
+      const frame = document.getElementById(`frame-${i}`);
+      try {
+        const { svg } = await mermaid.render(`m${i}`, d.mermaid);
+        frame.insertAdjacentHTML("beforeend", svg);
+        const el = frame.querySelector("svg");
+        el.removeAttribute("height"); el.style.maxWidth = "none";
+        zooms[i] = svgPanZoom(el, { zoomEnabled: true, controlIconsEnabled: false, fit: true, center: true, minZoom: 0.2, maxZoom: 20, zoomScaleSensitivity: 0.3 });
+      } catch (e) {
+        frame.insertAdjacentHTML("beforeend", `<pre style="padding:12px;color:#b3261e">${esc(e.message || e)}</pre>`);
+      }
+    }
+  })();
+  document.addEventListener("click", e => {
+    const b = e.target.closest("button[data-act]"); if (!b) return;
+    const z = zooms[b.dataset.i]; if (!z) return;
+    if (b.dataset.act === "in") z.zoomIn(); else if (b.dataset.act === "out") z.zoomOut(); else { z.resize(); z.fit(); z.center(); }
+  });
+  window.addEventListener("resize", () => Object.values(zooms).forEach(z => { z.resize(); z.fit(); z.center(); }));
+</script>
+</body>
+</html>
