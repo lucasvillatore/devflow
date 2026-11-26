@@ -32,6 +32,8 @@ argument-hint: "[question]"
 
    Opening it on GitHub automatically is not available yet: the user copies it, or explicitly asks you to run `gh issue create` on the repository.
 
+For a visual overview (Areas, the usual flows, the workspace files), run `python3 <plugin>/scripts/overview.py --open`: it writes `<vault>/devflow/overview.html` in the user's language and opens it.
+
 ## Rules
 
 - Never invent a skill, flag or Area that is not in the catalog.

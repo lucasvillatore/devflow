@@ -73,7 +73,7 @@ Text is plain; `code` in backticks is rendered as code. -->
             <button data-act="fit" data-i="${i}" title="Fit">⤢</button>
           </div>
         </div>
-        <p class="hint">Scroll to zoom, drag to move.</p>
+        <p class="hint">${esc(data.hint || "Scroll to zoom, drag to move.")}</p>
         ${(d.legend || []).length ? `<ul class="legend">${d.legend.map(l => `<li>${rich(l)}</li>`).join("")}</ul>` : ""}
       </section>`).join("");
     app.insertAdjacentHTML("beforeend", g.items.length > 1 ? `<div class="pair">${html}</div>` : html);
