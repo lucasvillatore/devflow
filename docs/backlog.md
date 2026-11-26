@@ -25,6 +25,17 @@ Testing now: `/devflow:draw` (experimental Area) analyses a function, file or sy
 
 Skills that could use it: `ask` (show the flow and where the user is), `pick-issue` and `plan-issue` (Issue and Task graph), `investigate-issue` (how the system works today, call flow), `retro` (the session timeline), `open-pr` (the Summary already prefers a visual), kb skills (journeys). Related existing skills: Matt Pocock's `prototype`, and the `artifact-design`, `artifact-diagramming` and `dataviz` skills.
 
+## Evaluation cases for investigate-issue and diagnose
+
+A test with an answer key, to know whether the investigation really works: past problems whose answer the user knows, run blind and compared. Covers both sides: a real bug must reach the right root cause; a false premise must end as "premise not confirmed", not as an invented cause.
+
+- A table in the Vault (e.g. `devflow/evaluation/investigate.md`): case, what is asked (the original report, without later hints), the answer key, the result of each run.
+- **User**: picks the case and gives the answer key; opens a fresh session (so the conversation does not leak the answer); has the final word on each result.
+- **Claude**: fetches the original report from the tracker and the commit before the fix; investigates and diagnoses blind on that commit; compares with the answer key and records the run; proposes a skill change when it fails.
+- When: when an interesting bug is closed ("turn it into an evaluation case"), after changing `investigate-issue` or `diagnose`, and one false premise for every 3 or 4 real bugs.
+- First cases: CAT-5927 (the ignored-errors list was inverted, so a 401 from a rotated credential did not stop the job, which swept the whole bucket) and a false premise the user remembers.
+- Start by hand with 2 or 3 cases; if it becomes routine, a `/devflow:eval` skill prepares, runs and compares, and the user only confirms. Check whether `claude plugin eval` can automate it.
+
 ## dev-task (development)
 
 Not built for now: the user asks for the implementation directly ("implement Task 2 of ABC-123"). Build it if keeping statuses, validation and commits consistent by hand gets tiresome. Draft decisions:
