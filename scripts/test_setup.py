@@ -50,6 +50,11 @@ for language in ("pt-BR", "en"):
         r = run(home, "check")
         assert "out of date" in r.stdout, r.stdout
         open(os.path.join(claude, "CLAUDE.md"), "w").write(md)
+        os.remove(os.path.join(vault, "devflow", "workflow.md"))
+        r = run(home, "check")
+        assert "out of date" in r.stdout, r.stdout
+        r = run(home, *args)
+        assert "+ devflow/workflow.md" in r.stdout, r.stdout
 
         r = run(home, *args)
         assert "(nothing missing)" in r.stdout and r.stdout.count("(no change)") == 3, r.stdout

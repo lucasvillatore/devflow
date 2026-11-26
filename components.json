@@ -8,7 +8,9 @@
       ]
     },
     "issue": {
-      "skills": []
+      "skills": [
+        "pick-issue"
+      ]
     },
     "planning": {
       "skills": []

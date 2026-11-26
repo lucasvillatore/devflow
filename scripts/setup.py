@@ -194,7 +194,8 @@ def check():
     else:
         current, wanted = claude_md_plan(config["vault"])
         settings_old, settings_new = settings_plan(config.get("areas", []))
-        if current == wanted and settings_old == settings_new:
+        missing = vault_plan(config.get("language", "en"), config["vault"])
+        if current == wanted and settings_old == settings_new and not missing:
             return
         problem = "devflow was updated and this machine's setup is out of date."
     print(json.dumps({

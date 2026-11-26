@@ -1,6 +1,26 @@
 # Backlog
 
-Items deferred on purpose. When the Vault exists, this list moves there.
+Items deferred on purpose, and the v0 Components not built yet.
+
+## plan-issue (planning, v0)
+
+Interview in rounds until no decision is open, then write the planning Task and one Task per deliverable in the Issue workspace, with `depends_on` between them.
+
+## dev-task (development, v0)
+
+Run one Task: read the surrounding code patterns, describe the change and wait for the go, implement, validate only the changed files, commit, mark the Task `done`.
+
+## open-pr (delivery, v0)
+
+Open the pull request in the team format (Summary, Evidence, Merge Danger), after showing it to the user.
+
+## add-guardrail (base, v0)
+
+The user describes a behavior or code pattern they disliked; the skill picks the mechanism (hook, CLAUDE.md rule, Vault convention), asks repository or global, and writes a self-contained hook with a test case.
+
+## awsq and dbq (investigate, v0)
+
+Move the scripts into the plugin's `bin/`, company data (AWS profiles, database names) into `<vault>/devflow/investigate/`, credentials stay in `pass`.
 
 ## Personal layer (`ai-setup`)
 

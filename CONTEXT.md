@@ -9,15 +9,15 @@ A unit of work in the issue tracker (e.g. a Jira item such as `CAT-5927`). It is
 _Avoid_: ticket, card, task
 
 **Task**:
-An internal unit of work produced by planning an Issue: one file in the Issue workspace, one deliverable, one commit.
+An internal unit of work produced by planning an Issue: one file in the Issue workspace, one deliverable, one commit. It has a local status (`todo`, `doing`, `blocked`, `done`, extensible in the Vault) and may depend on other Tasks.
 _Avoid_: subtask, step
 
 **Issue workspace**:
-The folder `<vault>/issues/<ISSUE-KEY>/`, ignored by the Vault's git, where every artifact of an Issue lives. Each Task says which repository it changes.
+The folder `<vault>/issues/<ISSUE-KEY>/`, ignored by the Vault's git, where every artifact of an Issue lives: `index.md` (the Issue), `log.md` (dated events) and one file per Task. All of them use OKF frontmatter, so agents and Obsidian can query status and dependencies like a local tracker.
 _Avoid_: scratch folder, work dir
 
 **Contract**:
-A file in the Issue workspace that one Component writes and another reads (e.g. `0-issue.md`, `N-<task>.md`). Components depend on Contracts, never on each other.
+A file in the Issue workspace that one Component writes and another reads (e.g. the Issue's `index.md`, `N-<task>.md`). Components depend on Contracts, never on each other.
 _Avoid_: handoff, interface
 
 **Component**:
@@ -39,6 +39,10 @@ _Avoid_: dotfiles, profile
 **Guardrail**:
 A rule that steers the agent, created from feedback: a hook when the rule is mechanical, an instruction when it needs judgement, a Vault convention when it belongs to the team.
 _Avoid_: lint rule, policy
+
+**Tracker status**:
+The status of an Issue in the issue tracker, mirrored in the Issue's `index.md`. Discovered from the tracker's transitions; the known list only grows.
+_Avoid_: Task status
 
 ## Relationships
 
