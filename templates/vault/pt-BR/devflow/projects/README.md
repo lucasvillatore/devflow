@@ -11,6 +11,7 @@ Um arquivo por repositório (`<repo>.md`, com o nome da pasta do repo). As skill
 - Lint dos arquivos alterados: <comando, com {files}>
 - Build: <comando>
 - Suíte completa: <comando>
+- Limite de complexidade: 10
 ```
 
 Acrescente o que mais for específico do repo (pipeline de staging, recursos, cuidados). A seção `## Melhorias recusadas` guarda melhorias que você recusou com motivo; a `analyze` não sugere de novo.

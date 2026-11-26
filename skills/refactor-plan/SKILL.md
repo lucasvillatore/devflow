@@ -1,7 +1,7 @@
 ---
 name: refactor-plan
 description: (Experimental) Plan the refactoring of a project or a set of modules without changing code - measure complexity across it, cross it with the hot spots in git history, pin the external contract with recorded border tests, and write prioritized Tasks, each a function or class refactoring for /devflow:refactor. Use when the user wants to refactor or clean up a whole project, service or module set.
-argument-hint: "<project or path> [workspace]"
+argument-hint: "<project or path> [workspace] [why you want it refactored]"
 ---
 
 # Plan a refactoring
@@ -22,7 +22,7 @@ The scripts and references are at the root of this plugin (two levels above this
 
 4. **External contract.** Following the Project section of `references/refactor-contracts.md`, list what the outside world sees (endpoints, messages, schema, jobs, commands). Propose border contract tests: real requests and responses (or messages and effects) recorded and replayed with `scripts/equivalence.py`. Ask before writing them; they are the safety net of every Task.
 
-5. **Candidates.** For each top candidate: the target (function or class), the problems and the moves from `references/refactor-moves.md`, the contract it must keep, the expected gain (CCN before → target), the risk, and the effort. Changes that cross the contract go as expand-contract (expand, migrate in batches, contract), one Task per step. Show the list and iterate with the user on order and granularity.
+5. **Candidates.** Apply "Is it worth it?" from `references/refactor-moves.md` to the project and to each candidate: the user's reason, when given, is a premise to verify first (e.g. "adding a new type touches many modules": count them); candidates below the limit (repository profile, default CCN 10) with no problem from the table and no confirmed reason stay out. When nothing is left, the answer is **"the project is healthy, nothing to prioritize"**, with the complexity distribution as evidence, and no Tasks are written. For each remaining candidate: the target (function or class), the problems and the moves from `references/refactor-moves.md`, the contract it must keep, the expected gain (CCN before → target), the risk, and the effort. Changes that cross the contract go as expand-contract (expand, migrate in batches, contract), one Task per step. Show the list and iterate with the user on order and granularity.
 
 6. **Write the Tasks** following `references/tasks.md`: the Planning first when there is none (its Context points to `<evidence>/plan.md`), numbering after it, the checklist and the `**Plan**` log entry. One Task per refactoring, What = target and moves, How = the contract and the proof expected, Acceptance criteria = tests green, `EQUIVALENT`, CCN target reached, border contract tests green. `depends_on` for the order (the border tests first; expand before migrate before contract). Record the plan in `<evidence>/plan.md` with the baseline numbers and the reasoning.
 

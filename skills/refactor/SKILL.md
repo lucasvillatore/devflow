@@ -1,7 +1,7 @@
 ---
 name: refactor
 description: (Experimental) Refactor a function or a class with proof that its contract did not change - measure complexity, pin the current behavior with characterization tests and recorded outputs, refactor in small steps, then show the same tests green, identical outputs before and after, and the complexity numbers. Works for TypeScript, JavaScript, PHP, Go and Java. Use when the user wants to simplify or refactor a function or class safely; for a whole project or module set, use refactor-plan.
-argument-hint: "<function or class> [workspace]"
+argument-hint: "<function or class> [workspace] [why you want it refactored]"
 ---
 
 # Refactor with proof
@@ -17,6 +17,11 @@ Workspace: `references/workspace.md` (an Issue key or a name). The evidence live
 1. **Tools.** Run `python3 <plugin>/scripts/tools.py check lizard`. When missing, show the install command it prints and run it only after the user agrees. Mutation tools (`stryker`, `infection`, `gremlins`, `pit`) are optional: check them only if the user wants mutation testing; project tools are never installed by you, only suggested.
 
 2. **Target, level and contract.** The target comes from the argument, a Task from `refactor-plan`, or an analysis finding (`type: Analysis` in the workspace). Say whether it is a function or a class and state its contract, following `references/refactor-contracts.md`. A target bigger than a class: stop and suggest `/devflow:refactor-plan`. Measure the **whole file** of the target (not only the function, so the functions extracted later are counted): `python3 <plugin>/scripts/complexity.py measure <file> --out <evidence>/before.json`. Show the target's numbers (CCN = number of independent paths; each path needs a test).
+
+   **Is it worth it?** Follow "Is it worth it?" in `references/refactor-moves.md` before writing any test:
+   - when the user gave a reason, treat it as a premise and verify it in the code (confirmed, partly confirmed, not confirmed, with evidence);
+   - without a reason, the numbers (limit from the repository profile, default CCN 10), the problems of the moves table and how often the code changes must justify it.
+   When nothing justifies it, answer **"it is ok"** with the evidence and stop: no tests, no harness, no changes. When the user's reason is not confirmed, say so with the evidence and stop unless they still want it.
 
 3. **Pin the current behavior.** Before touching the code:
    - find the existing tests of the target and run them;

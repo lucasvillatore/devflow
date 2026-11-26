@@ -14,3 +14,20 @@ Problem → move. `/devflow:refactor` picks moves from here and names them in th
 | Shallow modules | many small modules a concept bounces between; interface as complex as the implementation | merge into a deeper module behind a smaller interface (Architecture lens) |
 | Temporal coupling | calls that must happen in a hidden order | make the order explicit in one function, or one call that does both |
 | Primitive obsession | strings or numbers carrying rules (codes, money, ids) | a small type that holds the value and its rules |
+
+## Is it worth it?
+
+Refactoring working code always carries risk, so "nothing to refactor" is a valid result. Decide before writing any test.
+
+**The user's reason is a premise.** When the user says why they want the refactoring ("every new shipping type touches 5 places", "this class keeps breaking", "I cannot test this"), verify it in the code before anything else: count the places that change together, look at the bug and change history of the area (`git log`), try to isolate the code in a test. The result is one of:
+- **confirmed**: refactor aimed at that reason, and measure the gain by it ("5 places → 1"), not only by complexity;
+- **partly confirmed**: show the real size of the problem; the user decides;
+- **not confirmed**: say so with the evidence ("only 1 place changes; the other 4 already call the same function") and stop.
+A reason that cannot be measured ("the team does it differently") rests on a Vault convention when one exists; otherwise it is an opinion. Say which, and let the user decide.
+
+**Without a reason from the user**, the code has to justify it:
+- **numbers**: CCN and size above the limit. Default limit: CCN 10 per function; a repository profile may set its own (`Complexity limit`);
+- **problems**: each row of the table above checked, present or absent, with evidence;
+- **context**: how often the code changes; stable code nobody touches pays off little.
+
+When nothing justifies it, the answer is **"it is ok"**: the numbers, the problems checked and why none applies, and at most small optional touches (a name outside the domain) marked optional and not done. Only propose changes with a gain that can be shown (lower complexity, duplication removed, a responsibility split out, the user's confirmed reason addressed); "it would look nicer" is at most **speculative**.
