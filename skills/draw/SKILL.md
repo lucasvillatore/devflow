@@ -1,7 +1,7 @@
 ---
 name: draw
 description: (Experimental) Turn code or a system flow into a diagram of its concepts - a long function or file grouped into blocks by responsibility, or the path of data across services, queues, jobs and databases - analysed first, then a recommended format with reasons for the user to pick, then drawn with file:line on each block. Use when the user asks to draw, diagram or visualize a function, file or flow, or when understanding something would take a lot of reading.
-argument-hint: "<function, file or flow>"
+argument-hint: "<function, file, flow or ISSUE-KEY> | before/after <finding>"
 ---
 
 # Draw
@@ -36,3 +36,18 @@ Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks
    Write only after the user picks.
 
 5. **Feedback.** Ask what helped and what did not (format, size, grouping, missing detail). When the answer changes how diagrams should be drawn or which format fits which case, offer to record it in the Vault's `.kb/diagrams.md` or propose a change to `references/draw-formats.md`.
+
+## Before/after
+
+When the argument asks for a before/after, or the user picks one improvement from an analysis, draw the same part of the code twice, side by side: **before** (as it is) and **after** (with the improvement). Same layout and names in both so only the change stands out: what is removed or changed in `bad`, what is new in `ok`. Steps 1, 2, 4 and 5 still apply (the map, the format the user picks, where to save, feedback). Under the two diagrams, the explanation, always in this order:
+
+1. **What changes**: one line per block that enters, leaves or moves.
+2. **Why**: each reason with its basis, strongest first:
+   - **fact**: data, log or reproduction from the investigation (e.g. "1,150 of yesterday's 1,200 updates had no change");
+   - **code**: the `file:line` that shows the problem;
+   - **team convention**: a Vault convention or a guardrail;
+   - **principle**: a named one (idempotency, fail fast, deep module, single responsibility).
+   A reason with no basis is marked **opinion**.
+3. **Gain**, measurable when possible: fewer calls, complexity from X to Y, a test that becomes possible, a partial failure that disappears.
+4. **Cost and risk**: what gets worse or more complex, what could break, and whether it is reversible (two-way door) or not (one-way door).
+5. **Alternatives discarded**: other ways to solve it, each with why it is not the recommendation.

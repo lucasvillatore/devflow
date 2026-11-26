@@ -12,4 +12,4 @@ One file per repository (`<repo>.md`, named after the repository folder). devflo
 - Full suite: <command>
 ```
 
-Add whatever else is specific to the repository (staging pipeline, resources, caveats).
+Add whatever else is specific to the repository (staging pipeline, resources, caveats). The `## Rejected improvements` section keeps improvements the user rejected with a reason; `analyze` does not suggest them again.

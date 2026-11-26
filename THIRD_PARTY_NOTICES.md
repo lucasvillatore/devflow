@@ -2,7 +2,7 @@
 
 ## mattpocock/skills
 
-`references/grilling.md` is adapted from the `grilling` skill, the categories of `skills/retro/SKILL.md` from the `retro` skill, and the feedback-loop step of `skills/investigate-issue/SKILL.md` from the `diagnosing-bugs` skill, of Matt Pocock's skills (https://github.com/mattpocock/skills), under the MIT License:
+`references/grilling.md` is adapted from the `grilling` skill, the categories of `skills/retro/SKILL.md` from the `retro` skill, the feedback-loop step of `skills/investigate-issue/SKILL.md` from the `diagnosing-bugs` skill, and the Architecture lens of `references/analysis-lenses.md` from the `improve-codebase-architecture` and `codebase-design` skills, of Matt Pocock's skills (https://github.com/mattpocock/skills), under the MIT License:
 
 ```
 MIT License

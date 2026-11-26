@@ -12,4 +12,4 @@ Um arquivo por repositório (`<repo>.md`, com o nome da pasta do repo). As skill
 - Suíte completa: <comando>
 ```
 
-Acrescente o que mais for específico do repo (pipeline de staging, recursos, cuidados).
+Acrescente o que mais for específico do repo (pipeline de staging, recursos, cuidados). A seção `## Melhorias recusadas` guarda melhorias que você recusou com motivo; a `analyze` não sugere de novo.
