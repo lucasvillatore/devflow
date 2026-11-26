@@ -1,6 +1,7 @@
 ---
 name: kb-researcher
 description: Reads the code of an already downloaded repository and extracts the business rules of a subject, with file:line evidence and a confirmed or inferred mark. Use one per repository, in parallel, in the research phase of kb-context.
+model: sonnet
 tools: Read, Grep, Glob, Bash, Write
 ---
 
