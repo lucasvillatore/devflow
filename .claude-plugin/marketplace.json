@@ -1,0 +1,14 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "devflow",
+  "description": "devflow plugin marketplace.",
+  "owner": { "name": "lucasvillatore" },
+  "plugins": [
+    {
+      "name": "devflow",
+      "source": "./",
+      "description": "Local development workflow: issue, planning, development, delivery, investigate, knowledge.",
+      "category": "productivity"
+    }
+  ]
+}

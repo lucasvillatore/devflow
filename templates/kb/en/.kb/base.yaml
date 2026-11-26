@@ -1,0 +1,81 @@
+# Knowledge base configuration. devflow's kb-* skills read this file.
+# Change it here to change the format. The plugin has no format of its own.
+
+okf_version: "0.2"
+language: en
+
+folders:
+  journeys: Journeys
+  contexts: Business contexts
+  glossary: Glossary
+  # Folders that group the parts of a process inside a context.
+  # Documents inside them follow the "Process part" template.
+  process_parts: []
+
+# Vault root folders that are not knowledge (used by devflow).
+skip_folders: [issues, devflow]
+
+reserved: [index.md, log.md]
+
+# Role -> value used in the frontmatter.
+status:
+  draft: draft
+  active: active
+  obsolete: obsolete
+
+required_fields: [type, title, description, status, timestamp]
+
+# Required sections of each type, in order. "draft_sections" is the minimum while the status is draft.
+types:
+  Journey:
+    sections: [Goal, Steps]
+    draft_sections: [Goal]
+    template: templates/Journey.md
+  Business rule:
+    sections: [Rule, Example]
+    template: templates/Business rule.md
+  Process part:
+    # Not a type value: documents use type "Business rule" and live in a process_parts folder.
+    template_only: true
+    sections: [What it is, Minimum fields, What it does, Result, Impact, Example]
+    template: templates/Process part.md
+  Term:
+    sections: [Definition, Example]
+    template: templates/Term.md
+  Guide:
+    sections: []
+
+names:
+  rule: "Business name, first letter capitalized, with spaces. No hyphens, no system names."
+  rule_name: "States the policy, not the case or the technical moment."
+
+# Marker for behavior with no business decision.
+to_be_confirmed: To be confirmed
+
+forbidden:
+  # Regular expressions searched in document bodies (case-insensitive).
+  phrases:
+    - "(^|\\. )If [^.]*, the system"
+    - "high[- ]level (view|overview)"
+  # System words. Verification warns when they appear in the body.
+  # Add your company's system names.
+  system_terms:
+    - lambda
+    - SQS
+    - SNS
+    - Redis
+    - MongoDB
+    - endpoint
+    - payload
+    - worker
+  # Sections that never go in a document.
+  sections: [Citations, Where it applies]
+  # Links to headings inside files (file.md#heading).
+  anchor_links: true
+
+# Types that quote forbidden terms and phrases as examples of what not to do.
+no_writing_warnings: [Guide]
+
+granularity: >-
+  A rule gets its own file when it applies to more than one process part,
+  or when someone would look it up by name. Otherwise it stays inside the process part.

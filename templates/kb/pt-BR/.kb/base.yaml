@@ -1,0 +1,81 @@
+# Configuração da base de conhecimento. As skills kb-* do devflow leem este arquivo.
+# Mude aqui para mudar o formato. O plugin não tem formato próprio.
+
+okf_version: "0.2"
+language: pt-BR
+
+folders:
+  journeys: Jornadas
+  contexts: Contextos de negócio
+  glossary: Glossário
+  # Pastas que agrupam as partes de um processo dentro de um contexto.
+  # Os documentos dentro delas seguem o molde "Parte do processo".
+  process_parts: []
+
+# Pastas da raiz do vault que não são conhecimento (o devflow usa).
+skip_folders: [issues, devflow]
+
+reserved: [index.md, log.md]
+
+# Papel -> valor usado no frontmatter.
+status:
+  draft: rascunho
+  active: ativo
+  obsolete: obsoleto
+
+required_fields: [type, title, description, status, timestamp]
+
+# Seções obrigatórias de cada tipo, na ordem. "draft_sections" é o mínimo enquanto o status é rascunho.
+types:
+  Jornada:
+    sections: [Objetivo, Passos]
+    draft_sections: [Objetivo]
+    template: templates/Jornada.md
+  Regra de negócio:
+    sections: [Regra, Exemplo]
+    template: templates/Regra de negócio.md
+  Parte do processo:
+    # Não é um valor de type: os documentos usam type "Regra de negócio" e ficam numa pasta de process_parts.
+    template_only: true
+    sections: [O que é, Campos mínimos, O que ela faz, Resultado, Impacto, Exemplo]
+    template: templates/Parte do processo.md
+  Termo:
+    sections: [Definição, Exemplo]
+    template: templates/Termo.md
+  Guia:
+    sections: []
+
+names:
+  rule: "Nome de negócio, primeira letra maiúscula, com espaços e acentos. Sem hífen, sem nome de sistema."
+  rule_name: "Diz a política, não o caso nem o momento técnico."
+
+# Marcador de comportamento sem decisão de negócio.
+to_be_confirmed: A confirmar
+
+forbidden:
+  # Expressões regulares procuradas no corpo dos documentos (sem diferenciar maiúsculas).
+  phrases:
+    - "(^|\\. )Se [^.]*, o sistema"
+    - "vis[aã]o de alto n[ií]vel"
+  # Palavras de sistema. A verificação avisa quando aparecem no corpo.
+  # Acrescente os nomes dos sistemas da sua empresa.
+  system_terms:
+    - lambda
+    - SQS
+    - SNS
+    - Redis
+    - MongoDB
+    - endpoint
+    - payload
+    - worker
+  # Seções que não entram em nenhum documento.
+  sections: [Citations, Onde vale]
+  # Links para títulos dentro de arquivos (arquivo.md#titulo).
+  anchor_links: true
+
+# Tipos que citam termos e frases proibidos como exemplo do que não fazer.
+no_writing_warnings: [Guia]
+
+granularity: >-
+  Uma regra vira arquivo próprio quando vale em mais de uma parte do processo,
+  ou quando alguém a procuraria pelo nome. Senão, fica dentro da parte do processo.
