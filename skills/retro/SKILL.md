@@ -29,6 +29,7 @@ Go through the session looking for:
 - **Steering files**: instructions in `~/.claude/CLAUDE.md`, `~/.claude/rules/`, the repository's `CLAUDE.md` or the Vault conventions that were ignored, contradicted each other, or change nothing (no-ops). Large steering files are a finding by themselves.
 - **Visual explanation**: understanding cost a lot of reading where a diagram would have done it: a long block read to understand it (a function of hundreds of lines, several files in a row), the same structure explained more than once or the user asking to explain again, a flow between systems followed in the conversation (service → queue → job → database).
 - **devflow gaps**: a skill missing a step, asking the wrong thing, or a step the user had to do by hand every time.
+- **Corrections recorded in the workspace**: the "Corrections" section of `investigation.md` (and facts struck out in other files). Each one is a lesson: find why the first reading failed (a misleading field, a log in another place, the Issue's wording taken as fact) and where the fix goes so it does not happen again.
 - **Missing knowledge**: facts the session had to discover that are not in the Vault. Look in particular for:
   - **diverging terms**: a term used differently from the glossary, or two names for the same thing (a candidate for a glossary entry or a flagged ambiguity);
   - **walked paths**: a flow followed end to end while investigating (e.g. cart → coupon → price calculation) that is not a journey, or is a step missing from an existing journey;
