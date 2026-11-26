@@ -13,7 +13,7 @@ An internal unit of work produced by planning an Issue: one file in the Issue wo
 _Avoid_: subtask, step
 
 **Issue workspace**:
-The folder `<vault>/issues/<ISSUE-KEY>/`, ignored by the Vault's git, where every artifact of an Issue lives: `index.md` (the Issue), `log.md` (dated changes to the Issue's state: pick, plan, pull request) and one file per Task. All of them use OKF frontmatter, so agents and Obsidian can query status and dependencies like a local tracker.
+The folder `<vault>/issues/<id>/`, ignored by the Vault's git, where every artifact of a piece of work lives; `<id>` is the Issue key, or a lowercase name for work without an Issue (adopted by `pick-issue` if it becomes one). Contents: `index.md` (the Issue), `log.md` (dated changes to the Issue's state: pick, plan, pull request) and one file per Task. All of them use OKF frontmatter, so agents and Obsidian can query status and dependencies like a local tracker.
 _Avoid_: scratch folder, work dir
 
 **Planning**:

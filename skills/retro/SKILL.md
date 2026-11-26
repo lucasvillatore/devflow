@@ -2,7 +2,7 @@
 name: retro
 description: Retrospective of the current session - lists what went wrong or cost the user time, by severity, with the fix for each (a guardrail, a devflow change, a Vault convention), and the knowledge the session had to discover that is missing from the Vault. Writes nothing without the user's choice. Use when the user asks for a retro or retrospective of the session.
 disable-model-invocation: true
-argument-hint: "[ISSUE-KEY, only to pick where retro.md is saved]"
+argument-hint: "[ISSUE-KEY or workspace name, only to pick where retro.md is saved]"
 ---
 
 # Retro
@@ -13,7 +13,7 @@ Look back at this session and turn what went wrong into lasting fixes to the env
 
 - Read `~/.config/devflow/config.json` (`vault`). Without it, skip the Vault parts and say so.
 - The evidence is this conversation. If it was compacted and the summary is not enough, read the session transcript: the newest `.jsonl` in `~/.claude/projects/<working directory with / replaced by ->/`. Read only what you need.
-- The Issue key comes from the argument or the conversation, when there is one.
+- The workspace (an Issue key or a name, `references/workspace.md`) comes from the argument or the conversation, when there is one.
 
 ## 1. Find the candidates
 
@@ -75,7 +75,7 @@ Then ask which items to act on.
 
 ## 4. Record
 
-When there is an Issue workspace, write `<vault>/issues/<KEY>/retro.md` with the list and what was done with each item. Do not add a `log.md` entry: the log only records changes to the Issue's state.
+When there is a workspace, write `<vault>/issues/<id>/retro.md` with the list and what was done with each item. Do not add a `log.md` entry: the log only records changes to the Issue's state.
 
 ## Answer
 

@@ -11,6 +11,6 @@ Areas, in the usual order (each can be used on its own):
 5. **investigate**: read data, logs and infrastructure (read-only by default).
 6. **knowledge**: the Vault's knowledge base (journeys, contexts, rules, glossary).
 
-Every artifact of an Issue lives in its **Issue workspace**: `<vault>/issues/<ISSUE-KEY>/` (the Vault path is in `~/.config/devflow/config.json`). Components exchange files there; they never depend on each other.
+Every artifact of a piece of work lives in its **workspace**: `<vault>/issues/<ISSUE-KEY>/`, or `<vault>/issues/<name>/` for work without an Issue (the Vault path is in `~/.config/devflow/config.json`). Components exchange files there; they never depend on each other.
 
 Company conventions (code standards, repository profiles) live in the Vault under `devflow/`, imported below when present.

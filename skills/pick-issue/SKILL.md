@@ -1,7 +1,7 @@
 ---
 name: pick-issue
 description: Pick up a tracker Issue (Jira key like ABC-123 or a browse link) - assign it to the user, move it to the in-development status, read description, comments and links, and write the Issue workspace (index.md and log.md) in the Vault. Use when the user wants to pick, take, assume or start an Issue.
-argument-hint: "<ISSUE-KEY or link>"
+argument-hint: "<ISSUE-KEY or link> [workspace name to adopt]"
 ---
 
 # Pick an Issue
@@ -38,6 +38,7 @@ Use the Atlassian (Jira) connector. Each step ends at its criterion.
 5. **Find local paths.** From repository, service or file names mentioned in the Issue, look for folders that exist on this machine: siblings of the current repository, and repositories listed in `<vault>/devflow/projects/`. Keep only paths that exist. Ask the user which repositories or files the Issue touches when none are found or some seem missing; an empty list is fine.
 
 6. **Write the Issue workspace** `<vault>/issues/<KEY>/`.
+   - **Adopting a named workspace** (a second argument, or the user says the work started without an Issue, see `references/workspace.md`): rename `<vault>/issues/<name>/` to `<vault>/issues/<KEY>/`, fill the tracker fields of its `index.md` (`key`, `link`, `status`) and merge the Issue's context into its sections, keep every other file, and add a `log.md` entry `**Pick**: adopted from <name>`. Stop if both folders exist and ask.
    - **New workspace:** create `index.md` and `log.md` from the templates. Fill the frontmatter (`title`, one-sentence `description`, `key`, `link`, tracker `status`, `timestamp` today, `paths`) and the sections with what step 4 found, in the user's language, short and factual. Add a `log.md` entry.
    - **Existing workspace:** never touch any file other than `index.md` and `log.md`. Show the user what changed in the tracker since the last pick (status, description, new comments, links). Update the frontmatter, then ask:
      - **synthesize**: rewrite the sections as one coherent text with the new information, or

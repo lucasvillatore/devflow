@@ -1,7 +1,7 @@
 ---
 name: diagnose
 description: (Experimental) Judge why a problem happens and what to do about it, by crossing the problem (the Issue) with the code analysis and the investigation facts in the Issue workspace - root cause confirmed or probable, contributing factors, unrelated improvements, and a recommendation, each with its evidence and confidence. Use when the user wants the root cause or a verdict on a problem after analysing or investigating it.
-argument-hint: "<ISSUE-KEY or problem>"
+argument-hint: "<ISSUE-KEY, workspace name or problem>"
 ---
 
 # Diagnose
@@ -14,9 +14,9 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
 
 ## Inputs
 
-From the Issue workspace `<vault>/issues/<KEY>/` (or from the conversation when there is no Issue):
+From the workspace (`references/workspace.md` at the root of this plugin; an Issue key or a name):
 
-- **the problem**: `index.md` (the symptom, how it shows up, the acceptance criteria); without an Issue, the user's description;
+- **the problem**: `index.md` (the symptom, how it shows up, the acceptance criteria); when it says little, the user's description;
 - **the analysis**: every `type: Analysis` file (`/devflow:analyze`): the map and the code findings, neutral about the problem;
 - **the investigation**: `investigation.md` when it exists (`investigate-issue`): facts with evidence, such as the reproduction, outputs, data, logs.
 
@@ -38,7 +38,7 @@ Say which inputs you have. With neither analysis nor investigation, stop and sug
 
 4. **Recommendation.** What to change to fix the cause, what to change to make the contributing factors visible next time, and what to leave for later (unrelated improvements). No implementation plan: that is `/devflow:plan-issue`.
 
-5. **Save** `<vault>/issues/<KEY>/diagnosis.md` (name in the configured language, e.g. `diagnostico.md`), or ask where to save it when there is no Issue:
+5. **Save** `<vault>/issues/<id>/diagnosis.md` (name in the configured language, e.g. `diagnostico.md`):
 
    ```markdown
    ---

@@ -14,7 +14,7 @@ The references are at the root of this plugin (two levels above this skill's dir
 
 ## Steps
 
-1. **Map.** If an analysis of the same target already exists in the Issue workspace, show its map, ask whether the code changed since, and reuse it when it did not. Otherwise build the map following `references/analysis-map.md` and show it.
+1. **Map.** If an analysis of the same target already exists in the workspace, show its map, ask whether the code changed since, and reuse it when it did not. Otherwise build the map following `references/analysis-map.md` and show it.
 
 2. **Rejected before.** Read the section "Rejected improvements" of the repository profile `<vault>/devflow/projects/<repo>.md` (heading in the configured language). Improvements listed there are not suggested again; when a finding matches one, mention it in one line ("skipped: rejected on <date> because <reason>") unless the code changed in a way that removes the reason.
 
@@ -22,7 +22,7 @@ The references are at the root of this plugin (two levels above this skill's dir
 
 4. **Findings.** Apply the chosen lenses. Each finding: severity, evidence (`file:line`), why it matters, the suggestion, the effort and the recommendation strength (strong, worth exploring, speculative; see the lenses reference). Order by severity, then strength. Read the code you need for each finding; do not guess. When a lens finds nothing, say so in one line.
 
-5. **Save.** In the Issue workspace when there is an Issue (`<vault>/issues/<KEY>/analysis-<slug>.md`, file name in the configured language, e.g. `analise-<slug>.md`), otherwise ask whether to save it and where. Format:
+5. **Save** in the workspace (`references/workspace.md`: an Issue key or a name; ask for one if the session has none) as `<vault>/issues/<id>/analysis-<slug>.md`, file name in the configured language, e.g. `analise-<slug>.md`. Format:
 
    ```markdown
    ---

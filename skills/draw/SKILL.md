@@ -1,7 +1,7 @@
 ---
 name: draw
 description: (Experimental) Turn code or a system flow into a diagram of its concepts - a long function or file grouped into blocks by responsibility, or the path of data across services, queues, jobs and databases - analysed first, then a recommended format with reasons for the user to pick, then drawn with file:line on each block. Use when the user asks to draw, diagram or visualize a function, file or flow, or when understanding something would take a lot of reading.
-argument-hint: "<function, file, flow or ISSUE-KEY> | before/after <finding>"
+argument-hint: "<function, file, flow, ISSUE-KEY or workspace name> | before/after <finding>"
 ---
 
 # Draw
@@ -15,7 +15,7 @@ The goal is understanding at a glance: concepts and how they connect, in the use
 Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks the format; never draw before they do.
 
 1. **Analysis.** Always analyse before drawing.
-   - **An Issue key as the argument** draws the whole problem: read everything in `<vault>/issues/<KEY>/` that exists: the analyses (`type: Analysis`, their map), the investigation (`type: Investigation`, the signal, the reproduction and the facts) and the diagnosis (`type: Diagnosis`, the verdict and the classification). Say which ones you found. The map comes from the analysis; when there is none, build it following `references/analysis-map.md`.
+   - **An Issue key or workspace name as the argument** (`references/workspace.md`) draws the whole problem: read everything in `<vault>/issues/<id>/` that exists: the analyses (`type: Analysis`, their map), the investigation (`type: Investigation`, the signal, the reproduction and the facts) and the diagnosis (`type: Diagnosis`, the verdict and the classification). Say which ones you found. The map comes from the analysis; when there is none, build it following `references/analysis-map.md`.
    - **A function, file or flow as the argument**: if an analysis of the same target exists, use its map and say so; otherwise build the map following `references/analysis-map.md` at the root of this plugin (two levels above this skill's directory).
    - Show the map, plus what each block carries from the other files: findings, facts, and its diagnosis class.
 
@@ -32,7 +32,7 @@ Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks
 4. **Save.** Ask where to save it, suggesting the place it will be read again:
    - a business flow → the knowledge base (suggest `/devflow:kb-journey` or `/devflow:kb-context` to fold it into a journey or context);
    - a technical flow of a repository → its profile `<vault>/devflow/projects/<repo>.md`, under a `## Diagrams` section;
-   - something only this Issue needs → `<vault>/issues/<KEY>/diagrams.md` (or inside `investigation.md` when it exists).
+   - something only this work needs → `<vault>/issues/<id>/diagrams.md` (or inside `investigation.md` when it exists).
    Write only after the user picks.
 
 5. **Feedback.** Ask what helped and what did not (format, size, grouping, missing detail). When the answer changes how diagrams should be drawn or which format fits which case, offer to record it in the Vault's `.kb/diagrams.md` or propose a change to `references/draw-formats.md`.

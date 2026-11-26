@@ -1,7 +1,7 @@
 ---
 name: plan-issue
 description: Plan an Issue - interview the user in rounds until no decision is open, recording decisions in the Issue workspace as they are made, then split the work into Task files with dependencies. Use when the user wants to plan, break down or design the solution of an Issue (Jira key like ABC-123), or to resume an unfinished planning.
-argument-hint: "<ISSUE-KEY>"
+argument-hint: "<ISSUE-KEY or workspace name>"
 ---
 
 # Plan an Issue
@@ -11,8 +11,8 @@ Turn an Issue into Tasks through an interview. Writes only to the Issue workspac
 ## Before starting
 
 1. Read `~/.config/devflow/config.json` (`vault`, `language`). Without it, stop and tell the user to run `/devflow:setup`.
-2. Get the key (`[A-Z][A-Z0-9]+-\d+`) from the argument; without one, ask. The workspace is `<vault>/issues/<KEY>/`.
-3. Read the workspace: `index.md` (the Issue), `log.md`, every `N-*.md`, and the diagnosis, investigation and analysis files when they exist (`type: Diagnosis`, `investigation.md`, `type: Analysis`). Decisions they already settle (the root cause, a confirmed fact) are not asked again; open them as context in the first round. Without `index.md`, suggest `/devflow:pick-issue <KEY>` first, or ask the user for the context and go on.
+2. Find the workspace following `references/workspace.md` at the root of this plugin (two levels above this skill's directory); it may be an Issue key or a name.
+3. Read the workspace: `index.md` (the Issue), `log.md`, every `N-*.md`, and the diagnosis, investigation and analysis files when they exist (`type: Diagnosis`, `investigation.md`, `type: Analysis`). Decisions they already settle (the root cause, a confirmed fact) are not asked again; open them as context in the first round. Without a workspace: for an Issue key, suggest `/devflow:pick-issue <KEY>` first; for a name, create it (see the reference) with the context the user gives.
 4. Read `<vault>/devflow/workflow.md` (Task statuses) and, from the Vault's knowledge base, the glossary terms and contexts that match the Issue's subject (search the Vault for its key words). Read only what is relevant.
 
 Read `references/grilling.md` and the templates in `templates/issue/<language>/` at the root of this plugin (two levels above this skill's directory). Write every file in the configured language.

@@ -1,7 +1,7 @@
 ---
 name: investigate-issue
 description: (Experimental) Gather facts about a problem without concluding - build a signal that goes red on the bug (a failing test, a request, a query), reproduce it, and collect evidence from code, tests, logs and data (read-only), recorded in the Issue workspace for diagnose and plan-issue. Use when the cause of a bug is unknown, or the user needs to understand how the system behaves before planning.
-argument-hint: "<ISSUE-KEY or problem>"
+argument-hint: "<ISSUE-KEY, workspace name or problem>"
 ---
 
 # Investigate an Issue
@@ -10,7 +10,7 @@ argument-hint: "<ISSUE-KEY or problem>"
 
 Gather **facts**, not conclusions. Every fact has its evidence: a command and its output, a query and its result, a log line, a `file:line`. The verdict is `/devflow:diagnose`'s job.
 
-Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the configured language. The Issue workspace is `<vault>/issues/<KEY>/`.
+Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the configured language. Find the workspace following `references/workspace.md` at the root of this plugin (two levels above this skill's directory); it may be an Issue key or a name. Create it when it does not exist.
 
 ## What runs without asking, and what does not
 
@@ -30,7 +30,7 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
 
 4. **Collect facts** around the failing path: what the data looks like before and after, which calls run and in what order, what the logs say at the failure point, which branches the input takes. Record what was checked and found nothing too: it discards hypotheses. Do not explain the cause; describe what happens.
 
-5. **Record** `<vault>/issues/<KEY>/investigation.md` (name in the configured language, e.g. `investigacao.md`), updating it as facts come in, so a dropped session loses nothing:
+5. **Record** `<vault>/issues/<id>/investigation.md` (name in the configured language, e.g. `investigacao.md`), updating it as facts come in, so a dropped session loses nothing:
 
    ```markdown
    ---
@@ -52,6 +52,6 @@ Read `~/.config/devflow/config.json` (`vault`, `language`) and write in the conf
    <what only people can answer, and who>
    ```
 
-   Temporary scripts go to `<vault>/issues/<KEY>/scripts/`. A new reproduction test stays in the repository uncommitted; ask whether to keep it (it becomes the regression test of the fix) or remove it.
+   Temporary scripts go to `<vault>/issues/<id>/scripts/`. A new reproduction test stays in the repository uncommitted; ask whether to keep it (it becomes the regression test of the fix) or remove it.
 
-6. **Next step.** Suggest `/devflow:diagnose <KEY>` to judge the facts, and list the open questions. Then ask what was useful.
+6. **Next step.** Suggest `/devflow:diagnose <id>` to judge the facts, and list the open questions. Then ask what was useful.

@@ -46,7 +46,7 @@ for language in ("pt-BR", "en"):
 
         r = run(home, "check")
         assert r.stdout == "", r.stdout
-        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.replace("Issue workspace", "Old workspace"))
+        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.replace("devflow:end", "devflow:end-old"))
         r = run(home, "check")
         assert "out of date" in r.stdout, r.stdout
         open(os.path.join(claude, "CLAUDE.md"), "w").write(md)
