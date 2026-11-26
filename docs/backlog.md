@@ -16,6 +16,17 @@ Based on Matt Pocock's skills of the same name, with Jira (from `tracker.md`) in
 
 Open questions: does the user create epics and stories in Jira, or does that go through the PO (then generate text to paste instead of publishing)? Does the user triage bugs? Mapping of states to Jira statuses or labels, and of "blocked by" to the Jira link type.
 
+## Visual views
+
+The user reads better with visuals: the flow, an Issue's state and explanations should have a visual form, not only text. Best format still open. Options to explore:
+
+- **Mermaid in the Vault**: Obsidian renders it natively. Skills could add a small diagram to what they write (the Task graph with `depends_on` in the Planning, the flow in `investigation.md`, the journey in the kb, which already has `.kb/diagrams.md`).
+- **Obsidian Canvas / Bases**: a board of the Issue workspace (Tasks as cards by status) or a table view over the OKF frontmatter, with no code.
+- **HTML page**: like `prototypes/workflow.prototype.html` (a clickable simulation of the flow), or a generated page per Issue (Jira status, Tasks, commits, PRs), opened locally or published as a private claude.ai Artifact.
+- **FigJam diagrams** through the Figma connector, for architecture or flows to share with the team.
+
+Skills that could use it: `ask` (show the flow and where the user is), `pick-issue` and `plan-issue` (Issue and Task graph), `investigate-issue` (how the system works today, call flow), `retro` (the session timeline), `open-pr` (the Summary already prefers a visual), kb skills (journeys). Related existing skills: Matt Pocock's `prototype`, and the `artifact-design`, `artifact-diagramming` and `dataviz` skills.
+
 ## dev-task (development)
 
 Not built for now: the user asks for the implementation directly ("implement Task 2 of ABC-123"). Build it if keeping statuses, validation and commits consistent by hand gets tiresome. Draft decisions:
@@ -28,6 +39,7 @@ Not built for now: the user asks for the implementation directly ("implement Tas
 - Questions settled during the Task go to a "Decisions" section at the end of the Task file.
 - Closing: Task `done`, its box checked in the Planning, `log.md` entry with the commit hash; `blocked` with the reason when stopped.
 - Parallel Tasks in worktrees: later (the worktree starts from the default branch, not the Task's).
+- Pausing: when the session ends in the middle of a Task, write a "Where I stopped" section in the Task file (what is done, what was tried and failed and why, what is left), so a fresh session resumes from it. This replaces a separate handoff skill (Matt Pocock's `handoff`): the Issue workspace already carries everything else between sessions.
 
 ## Personal layer (`ai-setup`)
 
