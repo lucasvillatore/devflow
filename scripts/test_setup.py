@@ -26,6 +26,9 @@ for language in ("pt-BR", "en"):
         vault = os.path.join(home, "vault")
         args = ["apply", "--language", language, "--vault", vault, "--areas", "issue,planning"]
 
+        r = run(home, "check")
+        assert "not set up" in r.stdout, r.stdout
+
         r = run(home, *args, "--dry-run")
         assert r.returncode == 0, r.stderr
         assert not os.path.exists(vault) and not os.path.exists(os.path.join(home, ".config")), "dry run wrote files"
@@ -39,7 +42,14 @@ for language in ("pt-BR", "en"):
         assert md.startswith("# Mine\n\nKeep me.\n") and md.count("devflow:start") == 1
         assert f"@{vault}/devflow/conventions.md" in md
         config = json.load(open(os.path.join(home, ".config", "devflow", "config.json")))
-        assert config["areas"] == ["issue", "knowledge", "planning"], config
+        assert config["areas"] == ["base", "issue", "knowledge", "planning"], config
+
+        r = run(home, "check")
+        assert r.stdout == "", r.stdout
+        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.replace("Issue workspace", "Old workspace"))
+        r = run(home, "check")
+        assert "out of date" in r.stdout, r.stdout
+        open(os.path.join(claude, "CLAUDE.md"), "w").write(md)
 
         r = run(home, *args)
         assert "(nothing missing)" in r.stdout and r.stdout.count("(no change)") == 3, r.stdout
@@ -50,4 +60,4 @@ for language in ("pt-BR", "en"):
 
         v = subprocess.run([sys.executable, os.path.join(HERE, "kb_verify.py"), "--base", vault], capture_output=True, text=True)
         assert v.returncode == 0, v.stdout
-    print(f"ok {language}: dry run, apply, idempotence, foreign settings kept, vault verifies")
+    print(f"ok {language}: dry run, apply, idempotence, foreign settings kept, check, vault verifies")

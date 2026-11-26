@@ -2,7 +2,15 @@
   "name": "devflow",
   "displayName": "devflow",
   "description": "A local development workflow for Claude Code: pick an issue, plan it, build it task by task, deliver it, investigate production, and keep a knowledge vault. Every component can be turned on or off.",
-  "version": "0.0.1",
-  "author": { "name": "lucasvillatore" },
-  "keywords": ["workflow", "jira", "planning", "knowledge-base", "guardrails"]
+  "author": {
+    "name": "lucasvillatore"
+  },
+  "keywords": [
+    "workflow",
+    "jira",
+    "planning",
+    "knowledge-base",
+    "guardrails"
+  ],
+  "repository": "https://github.com/lucasvillatore/devflow"
 }

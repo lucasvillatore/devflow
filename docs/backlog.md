@@ -61,3 +61,11 @@ A knowledge base that already exists outside the Vault is not migrated automatic
 ## More than one Vault per machine
 
 The setup is per machine and points to a single Vault, so personal and company projects on the same computer share conventions and glossary. Options when it matters: a file in the repository pointing to another Vault, or one Vault per root folder (e.g. `~/work` → Vault A, `~/dev` → Vault B).
+
+## Semantic versioning
+
+`plugin.json` has no `version` today, so every commit is a new version (identified by its SHA) and auto-update picks it up. Move to semantic versions with a `CHANGELOG.md` once the plugin stabilizes or other people use it. Remember: with a fixed `version`, new commits do not reach users until it changes.
+
+## Standard issue for the devflow repository
+
+`/devflow:ask` drafts an issue when something does not exist. Next: a standard issue template on the repository and opening it with `gh issue create` after the user confirms.

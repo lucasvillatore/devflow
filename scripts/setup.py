@@ -3,6 +3,7 @@
 
 Usage:
   python3 setup.py status
+  python3 setup.py check
   python3 setup.py apply --language <en|pt-BR> --vault <path> --areas <a,b,...> [--dry-run]
 
 `apply` is idempotent: it only adds missing Vault files, rewrites only its own block in
@@ -186,10 +187,30 @@ def apply(args):
     print("\napplied")
 
 
+def check():
+    config = read_json(CONFIG, None)
+    if not config or not config.get("vault"):
+        problem = "devflow is installed but not set up on this machine."
+    else:
+        current, wanted = claude_md_plan(config["vault"])
+        settings_old, settings_new = settings_plan(config.get("areas", []))
+        if current == wanted and settings_old == settings_new:
+            return
+        problem = "devflow was updated and this machine's setup is out of date."
+    print(json.dumps({
+        "systemMessage": f"{problem} Run /devflow:setup.",
+        "hookSpecificOutput": {
+            "hookEventName": "SessionStart",
+            "additionalContext": f"{problem} If the user asks about devflow, tell them to run /devflow:setup first.",
+        },
+    }))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("status")
+    sub.add_parser("check", help="print a SessionStart hook message when the setup is missing or out of date")
     run = sub.add_parser("apply")
     run.add_argument("--language", required=True)
     run.add_argument("--vault", required=True)
@@ -198,6 +219,8 @@ def main():
     args = parser.parse_args()
     if args.command == "status":
         status()
+    elif args.command == "check":
+        check()
     else:
         apply(args)
 

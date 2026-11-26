@@ -19,7 +19,7 @@ See [CONTEXT.md](CONTEXT.md) for the vocabulary, [docs/adr](docs/adr) for the st
 
 | Area | Components |
 | :-- | :-- |
-| base | `setup`, `add-guardrail` |
+| base | `setup`, `ask`, `add-guardrail` |
 | issue | `pick-issue` |
 | planning | `plan-issue` |
 | development | `dev-task` |
@@ -42,3 +42,9 @@ Requirements: `gh` authenticated and Python 3 with PyYAML (knowledge Area).
 /plugin install devflow@devflow
 /devflow:setup
 ```
+
+Then turn on auto-update: `/plugin` → Marketplaces → devflow → auto-update. Claude Code checks for new commits each session and shows "Plugin updated: devflow · Run /reload-plugins to apply". The repository is private, so git must be able to authenticate without prompting (`gh auth setup-git`).
+
+When the plugin changes the setup's output, a session-start message asks you to run `/devflow:setup` again.
+
+`/devflow:ask [question]` explains devflow and tells which skill fits.
