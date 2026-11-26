@@ -46,9 +46,14 @@ for language in ("pt-BR", "en"):
 
         r = run(home, "check")
         assert r.stdout == "", r.stdout
-        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.replace("devflow:end", "devflow:end-old"))
+        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.replace("**Issue**", "**Old Issue**"))
         r = run(home, "check")
         assert "out of date" in r.stdout, r.stdout
+        open(os.path.join(claude, "CLAUDE.md"), "w").write(md.split("<!-- devflow:end -->")[0])
+        r = run(home, "check")
+        assert "broken" in r.stdout, r.stdout
+        r = run(home, *args, "--dry-run")
+        assert r.returncode != 0 and "only one of the devflow markers" in r.stderr, r.stderr
         open(os.path.join(claude, "CLAUDE.md"), "w").write(md)
         os.remove(os.path.join(vault, "devflow", "workflow.md"))
         r = run(home, "check")

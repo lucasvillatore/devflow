@@ -31,6 +31,10 @@ END = "<!-- devflow:end -->"
 SKILL_PREFIX = "Skill(devflow:"
 
 
+class BrokenBlock(Exception):
+    pass
+
+
 def read_json(path, default):
     if not os.path.exists(path):
         return default
@@ -107,6 +111,8 @@ def claude_md_plan(vault):
     current = read_text(CLAUDE_MD)
     flow = read_text(os.path.join(PLUGIN, "references", "flow.md")).strip()
     block = "\n".join([START, flow, "", f"@{os.path.join(vault, 'devflow', 'conventions.md')}", END])
+    if (START in current) != (END in current):
+        raise BrokenBlock(f"{CLAUDE_MD} has only one of the devflow markers; fix or remove the devflow block by hand, then run the setup again")
     if START in current and END in current:
         before, rest = current.split(START, 1)
         after = rest.split(END, 1)[1]
@@ -155,7 +161,10 @@ def apply(args):
     config_new = {"language": args.language, "vault": vault, "areas": areas}
     missing = vault_plan(args.language, vault)
     settings_old, settings_new = settings_plan(areas)
-    md_old, md_new = claude_md_plan(vault)
+    try:
+        md_old, md_new = claude_md_plan(vault)
+    except BrokenBlock as error:
+        sys.exit(str(error))
 
     print("== config:", CONFIG)
     print(diff("config.json", json.dumps(config_old, indent=2) + "\n" if config_old else "", json.dumps(config_new, indent=2) + "\n") or "(no change)")
@@ -192,12 +201,16 @@ def check():
     if not config or not config.get("vault"):
         problem = "devflow is installed but not set up on this machine."
     else:
-        current, wanted = claude_md_plan(config["vault"])
+        try:
+            current, wanted = claude_md_plan(config["vault"])
+        except BrokenBlock:
+            current, wanted = None, ""
         settings_old, settings_new = settings_plan(config.get("areas", []))
         missing = vault_plan(config.get("language", "en"), config["vault"])
         if current == wanted and settings_old == settings_new and not missing:
             return
-        problem = "devflow was updated and this machine's setup is out of date."
+        problem = ("the devflow block in ~/.claude/CLAUDE.md is broken (one marker is missing)." if current is None
+                   else "devflow was updated and this machine's setup is out of date.")
     print(json.dumps({
         "systemMessage": f"{problem} Run /devflow:setup.",
         "hookSpecificOutput": {

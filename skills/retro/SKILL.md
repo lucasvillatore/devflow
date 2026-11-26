@@ -7,6 +7,8 @@ argument-hint: "[ISSUE-KEY or workspace name, only to pick where retro.md is sav
 
 # Retro
 
+`<plugin>` below is the root of this plugin (two levels above this skill's directory).
+
 Look back at this session and turn what went wrong into lasting fixes to the environment: checks, pointers, access, conventions. Categories adapted from Matt Pocock's `retro` (MIT, see `THIRD_PARTY_NOTICES.md`). The session is the evidence: quote it. Speak the user's language.
 
 ## Before starting

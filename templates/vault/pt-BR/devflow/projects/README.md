@@ -5,6 +5,7 @@ Um arquivo por repositório (`<repo>.md`, com o nome da pasta do repo). As skill
 ```markdown
 # <repo>
 
+- Caminho local: ~/dev/<repo>
 - Branch default: main
 - Testes dos arquivos alterados: <comando, com {files}>
 - Lint dos arquivos alterados: <comando, com {files}>

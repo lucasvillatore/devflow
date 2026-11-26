@@ -11,27 +11,15 @@ A local development workflow for Claude Code, built to grow one Component at a t
 | Config | active Components, template language, Vault path | `~/.config/devflow/config.json` |
 | Machine | `~/.claude`, `~/.aws`, `~/.local/bin` | written only by the setup |
 
-Issues are worked in `<vault>/issues/<ISSUE-KEY>/` (git-ignored), so they can be browsed in Obsidian.
+Work happens in a workspace, `<vault>/issues/<ISSUE-KEY or name>/` (git-ignored), so it can be browsed in Obsidian.
 
 See [CONTEXT.md](CONTEXT.md) for the vocabulary, [docs/adr](docs/adr) for the structural decisions and [docs/backlog.md](docs/backlog.md) for what is deferred.
 
-## Areas (v0)
+## Areas and Components
 
-| Area | Components |
-| :-- | :-- |
-| base | `setup`, `ask`, `add-guardrail` |
-| issue | `pick-issue` |
-| planning | `plan-issue` |
-| development | `dev-task` |
-| delivery | `open-pr` |
-| investigate | `awsq`, `dbq` |
-| knowledge | `kb-context`, `kb-journey`, `kb-review`, `kb-verify`, `kb-close` (required) |
+The source of truth is [components.json](components.json): Areas, their skills, and which are required. To see what exists right now, with each skill's purpose and what is planned, run `/devflow:ask` or `python3 scripts/catalog.py`. New Components start in the `experimental` Area. Vault skeletons per language are in `templates/vault/`.
 
-Status: `setup` and the knowledge Area are done; the other Components are added one by one.
-
-Areas and their skills are listed in [components.json](components.json); the setup turns Areas on and off from it. Vault skeletons per language are in `templates/vault/`.
-
-Tests: `python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py`.
+Working on devflow itself: see [CLAUDE.md](CLAUDE.md) (principles, where things go, the tests to run).
 
 Requirements: `gh` authenticated and Python 3 with PyYAML (knowledge Area).
 

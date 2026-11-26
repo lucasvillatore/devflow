@@ -20,6 +20,8 @@ def load(path):
                 case = json.loads(line)
                 if "id" not in case or "output" not in case:
                     sys.exit(f"{path}:{number}: each line needs 'id' and 'output'")
+                if str(case["id"]) in cases:
+                    sys.exit(f"{path}:{number}: duplicate id {case['id']!r}: every case needs its own id")
                 cases[str(case["id"])] = case
     return cases
 

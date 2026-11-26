@@ -59,18 +59,30 @@ def check_file(path, rel, cfg, problems):
 
     if name in reserved:
         if fm_text is not None:
-            fm = yaml.safe_load(fm_text) or {}
-            if not (rel == "index.md" and set(fm) <= {"okf_version"}):
+            try:
+                fm = yaml.safe_load(fm_text) or {}
+            except yaml.YAMLError as e:
+                fm = None
+                error(f"invalid YAML frontmatter (unquoted text with ': '?): {str(e).splitlines()[0]}")
+            if fm is not None and not (rel == "index.md" and isinstance(fm, dict) and set(fm) <= {"okf_version"}):
                 error(f"{name} cannot have frontmatter (only the root index.md, with okf_version)")
+            if not isinstance(fm, dict):
+                fm = {}
     else:
+        parsed = False
         if fm_text is None:
             error("missing frontmatter")
         else:
             try:
                 fm = yaml.safe_load(fm_text) or {}
+                parsed = True
             except yaml.YAMLError as e:
                 error(f"invalid YAML frontmatter (unquoted text with ': '?): {str(e).splitlines()[0]}")
-        if fm:
+        if parsed and not isinstance(fm, dict):
+            error("frontmatter is not a list of fields (expected `field: value` lines)")
+            fm = {}
+            parsed = False
+        if parsed:
             for field in cfg.get("required_fields", ["type"]):
                 if not fm.get(field):
                     error(f"missing required field: {field}")

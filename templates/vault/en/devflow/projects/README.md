@@ -5,6 +5,7 @@ One file per repository (`<repo>.md`, named after the repository folder). devflo
 ```markdown
 # <repo>
 
+- Local path: ~/dev/<repo>
 - Default branch: main
 - Tests of changed files: <command, with {files}>
 - Lint of changed files: <command, with {files}>

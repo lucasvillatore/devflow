@@ -20,7 +20,7 @@ From the workspace (`references/workspace.md` at the root of this plugin (two le
 - **the analysis**: every `type: Analysis` file (`/devflow:analyze`): the map and the code findings, neutral about the problem;
 - **the investigation**: the `type: Investigation` file when it exists (`/devflow:investigate-issue`): facts with evidence, such as the reproduction, outputs, data, logs.
 
-Say which inputs you have. Ignore facts struck out under the investigation's Corrections. When the investigation says the **premise was not confirmed**, the verdict is that: say the reported behavior was not reproduced, with the evidence, and what would make it true; do not look for a cause anyway. With neither analysis nor investigation, stop and suggest `/devflow:analyze` (to read the code) and the investigation (to get facts).
+Say which inputs you have. Ignore facts struck out under the investigation's Corrections. When the investigation says the **premise was not confirmed**, the verdict is that: say the reported behavior was not reproduced, with the evidence, and what would make it true; do not look for a cause anyway. With neither analysis nor investigation, stop and suggest `/devflow:analyze` (to read the code) and `/devflow:investigate-issue` (to get facts).
 
 ## Steps
 
@@ -62,4 +62,4 @@ Say which inputs you have. Ignore facts struck out under the investigation's Cor
 
    Leave out empty sections. If a diagnosis already exists, show what changed in the verdict and update it.
 
-6. **Next step.** With a confirmed cause: `/devflow:plan-issue`, which reads this file. With only probable causes: the investigation of the missing facts first, then diagnose again. Then ask what was useful.
+6. **Next step.** With a confirmed cause: `/devflow:plan-issue`, which reads this file. With only probable causes: `/devflow:investigate-issue` for the missing facts first, then diagnose again. Then ask what was useful.

@@ -21,6 +21,10 @@ Every skill works the same way; only what depends on the tracker is skipped: no 
 
 When the work later becomes an Issue, `/devflow:pick-issue <KEY> <name>` adopts the workspace: renames the folder to the key, fills the tracker fields of `index.md` and keeps every other file.
 
+## Names
+
+Files and folders that skills create in a workspace are named in the configured language (`investigacao.md`, `diagramas/`, `retro.md` stays `retro.md` when the word is the same), except `index.md`, `log.md` and `scripts/`, which keep their names in every language. Names are for people; skills find files by `type`.
+
 ## Finding files inside it
 
 Find workspace files by their frontmatter `type`, never by file name: names follow the configured language (`investigation.md` is `investigacao.md` in pt-BR) and may change. When linking one file from another, use its real file name in the wikilink.

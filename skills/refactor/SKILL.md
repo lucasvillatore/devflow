@@ -26,7 +26,7 @@ Workspace: `references/workspace.md` (an Issue key or a name). The evidence live
    - measure branch coverage of the target with the repository's coverage command (from the repository profile `<vault>/devflow/projects/<repo>.md`; ask and record it when missing). Every branch of the target covered, or each uncovered one named with why;
    - record outputs: a small harness (in `<vault>/issues/<id>/scripts/`) runs the target over every characterization input plus generated ones, and writes `<evidence>/before.jsonl` (`{"id", "input", "output"}` per line; an error is an output). Creating the tests and the harness needs the user's ok, asked once with the plan of step 4.
 
-4. **Propose.** Name the problems and the moves from `references/refactor-moves.md` that address them. Show the refactoring as a before/after (`/devflow:draw before/after`, or inline Mermaid) with the explanation (what changes, why with its basis, gain, cost and risk, alternatives). Stop and wait for the user's ok.
+4. **Propose.** Name the problems and the moves from `references/refactor-moves.md` that address them. Show the refactoring as a before/after in inline Mermaid, in the same shape as draw's before/after (the user can also run `/devflow:draw` on it) with the explanation (what changes, why with its basis, gain, cost and risk, alternatives). Stop and wait for the user's ok.
 
 5. **Refactor in small steps.** One move at a time (extract a function, replace a condition, split a module). After each move, run the characterization tests; when one goes red, undo that move and try a smaller one. Never change a test to make it pass.
 

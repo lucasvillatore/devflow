@@ -54,6 +54,8 @@ def main():
     if os.path.exists(backlog):
         print("\n## planned (backlog, not available yet)")
         for title in re.findall(r"^## (.+)$", read(backlog), re.M):
+            if "(maintenance" in title:
+                continue
             print(f"- {title}")
     print(f"\nRepository (for issues and suggestions): {plugin.get('repository', 'unknown')}")
 

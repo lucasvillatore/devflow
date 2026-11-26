@@ -55,8 +55,14 @@ CASES = {
                 "---\ntype: Business rule\ntitle: B\ndescription: d\nstatus: rascunho\ntimestamp: 2026-01-15\n---\n"
                 "# Rule\nIf the time is zero, the system ignores it.\n# Example\nx\n",
             "devflow/projects/repo.md": "no frontmatter\n",
+            "Business contexts/Y/Not a map.md": "---\njust a line\n---\n# Rule\nx\n",
+            "Business contexts/Y/Empty front.md": "---\n\n---\n# Rule\nx\n",
+            "Business contexts/Y/index.md": "---\na: [\n---\n",
         },
         "expected": [
+            "frontmatter is not a list of fields",
+            "Empty front.md: missing required field: type",
+            "Business contexts/Y/index.md: invalid YAML frontmatter",
             "No example.md: missing required section of template 'Business rule': # Example",
             "status 'rascunho' is not in the configuration",
             "forbidden phrase",

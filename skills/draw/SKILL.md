@@ -37,7 +37,7 @@ Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks
 
 5. **Also keep it in the knowledge?** When the drawing explains something that outlives this work, offer to copy the Mermaid source to where it will be read again, and write only if the user agrees:
    - a business flow → the knowledge base (suggest `/devflow:kb-journey` or `/devflow:kb-context` to fold it into a journey or context);
-   - a technical flow of a repository → its profile `<vault>/devflow/projects/<repo>.md`, under a `## Diagrams` section, with a link to the page.
+   - a technical flow of a repository → its profile `<vault>/devflow/projects/<repo>.md`, under a `## Diagrams` section: the Mermaid source only, no link to the page (the workspace is git-ignored, so the link would break on other machines).
 
 6. **Feedback.** Ask what helped and what did not (format, size, grouping, missing detail). When the answer changes how diagrams should be drawn or which format fits which case, offer to record it in the Vault's `.kb/diagrams.md` or propose a change to `references/draw-formats.md`.
 

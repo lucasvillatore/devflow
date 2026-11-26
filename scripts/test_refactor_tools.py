@@ -27,6 +27,10 @@ with tempfile.TemporaryDirectory() as tmp:
     r = run(eq, os.path.join(tmp, "b.jsonl"), os.path.join(tmp, "diff.jsonl"))
     assert r.returncode == 1 and "DIFFERENT 1" in r.stdout and "MISSING after: 2" in r.stdout, r.stdout
 
+    write("dup.jsonl", [{"id": 1, "output": 1}, {"id": 1, "output": 2}])
+    r = run(eq, os.path.join(tmp, "dup.jsonl"), os.path.join(tmp, "same.jsonl"))
+    assert r.returncode != 0 and "duplicate id" in r.stderr, r.stderr
+
     has_lizard = run(os.path.join(HERE, "tools.py"), "path", "lizard").returncode == 0
     if has_lizard:
         open(os.path.join(tmp, "a.ts"), "w").write("export class C {\n  f(a: number): number { if (a > 1 && a < 5) { return 1 } else if (a < 0) { return 2 } return 0 }\n  g(): number { return 1 }\n}\n")

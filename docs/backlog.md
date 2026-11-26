@@ -12,42 +12,24 @@ Based on Matt Pocock's skills of the same name, with Jira (from `tracker.md`) in
 
 Open questions: does the user create epics and stories in Jira, or does that go through the PO (then generate text to paste instead of publishing)? Does the user triage bugs? Mapping of states to Jira statuses or labels, and of "blocked by" to the Jira link type.
 
-## Review fixes (independent review, 2026-11-26)
+## Review fixes (maintenance, independent review 2026-11-26)
 
-An agent that did not take part in building devflow reviewed the whole repository. All tests passed. To fix, most severe first:
+An agent that did not take part in building devflow reviewed the whole repository (24 findings). All fixed except:
 
-Fixed: 1 (files found by `type`), 2 (shared `references/tasks.md`), 3 (open-pr evidence sources, Decisions section in the Task template), 4 (closing a Task, manual in `flow.md` until dev-task; refactor closes its own Task), 5 and 6 (`awsq` exits 75 only on an expired session; failed login reported), 7 (whole-file measurement, repository-relative paths), 10 (no Start log entry), 11 (draw always saves), 12 (`dbq` tells a missing entry from a GPG failure); `bin/` scripts tested in `scripts/test_bin.py`.
+- **9** (medium): `setup.py check` flags any template file the user deleted or renamed, forever, and `apply` brings back the default folders. Leave content folders out of `check` (or record the files created and treat deleted ones as intended).
 
-**Medium**
-8. `kb_verify.py`: crashes on non-mapping frontmatter and on invalid YAML in reserved files; empty frontmatter passes.
-9. `setup.py check` flags any template file the user deleted or renamed, forever; leave content folders out of `check`.
+Structural notes still open: README, backlog and CONTEXT drift from components.json over time (the README now points to the catalog instead of listing skills).
 
-**Low**
-13. README lists dev-task (does not exist), leaves out retro and the experimental Area, names 2 of the 4 tests: point to `/devflow:ask` or generate from components.json.
-14. catalog.py prints every backlog heading as planned (Visual views is partly done); the backlog calls the Architecture lens planned; it points to the untracked `prototypes/` folder.
-15. retro, open-pr and diagnose refer to plugin files without the "two levels above this skill's directory" sentence.
-16. CONTEXT.md's workspace definition lists only index, log and Tasks, and says log.md has frontmatter.
-17. The backlog's personal-layer entry still says guardrails may go in a repository's `.claude/`.
-18. pick-issue looks for local paths in repository profiles, which have no local-path field.
-19. diagnose never names `/devflow:investigate-issue`.
-20. draw puts a link in the repository profile (in the Vault's git) to a page under the git-ignored `issues/`.
-21. Localized file names applied unevenly (`retro.md`, `scripts/`, `refactor/plan/plan.md`); `refactor/plan/` can clash with a target named `plan`.
-22. `equivalence.py` silently overwrites duplicate ids.
-23. `setup.py`: a CLAUDE.md with the start marker but no end marker gets a second block.
-24. refactor tells the agent to run `/devflow:draw` mid-skill, against "Components never call each other".
-
-**Structural**: the "find by type" rule (done) also covers 16 and 21; README, backlog and CONTEXT drift from components.json.
-
-## Visual views
+## Visual views (beyond draw)
 
 The user reads better with visuals: the flow, an Issue's state and explanations should have a visual form, not only text. Best format still open. Options to explore:
 
 - **Mermaid in the Vault**: Obsidian renders it natively. Skills could add a small diagram to what they write (the Task graph with `depends_on` in the Planning, the flow in `investigation.md`, the journey in the kb, which already has `.kb/diagrams.md`).
 - **Obsidian Canvas / Bases**: a board of the Issue workspace (Tasks as cards by status) or a table view over the OKF frontmatter, with no code.
-- **HTML page**: like `prototypes/workflow.prototype.html` (a clickable simulation of the flow), or a generated page per Issue (Jira status, Tasks, commits, PRs), opened locally or published as a private claude.ai Artifact.
+- **HTML page**: a clickable simulation of the flow (a throwaway prototype was made outside the repository), or a generated page per Issue (Jira status, Tasks, commits, PRs), opened locally or published as a private claude.ai Artifact.
 - **FigJam diagrams** through the Figma connector, for architecture or flows to share with the team.
 
-Testing now: `/devflow:draw` (experimental Area) analyses a function, file or system flow, recommends a format with reasons (the user picks) and draws it; formats in `references/draw-formats.md` (Mermaid available; draw.io, Canvas, HTML, FigJam planned); `retro` points to it when understanding cost a lot of reading. `/devflow:analyze` (experimental) maps the same targets and applies improvement lenses (`references/analysis-lenses.md`: complexity, partial failures and error handling available; architecture, testability, performance, observability, security and team conventions planned); `draw` reuses its map. `investigate-issue` should reuse the map too (`references/analysis-map.md`).
+Testing now: `/devflow:draw` (experimental Area) analyses a function, file or system flow, recommends a format with reasons (the user picks) and draws it; formats in `references/draw-formats.md` (Mermaid available; draw.io, Canvas, HTML, FigJam planned); `retro` points to it when understanding cost a lot of reading. `/devflow:analyze` (experimental) maps the same targets and applies improvement lenses (`references/analysis-lenses.md`: complexity, partial failures, error handling and architecture available; testability, performance, observability, security and team conventions planned); `draw` reuses its map. `investigate-issue` should reuse the map too (`references/analysis-map.md`).
 
 Skills that could use it: `ask` (show the flow and where the user is), `pick-issue` and `plan-issue` (Issue and Task graph), `investigate-issue` (how the system works today, call flow), `retro` (the session timeline), `open-pr` (the Summary already prefers a visual), kb skills (journeys). Related existing skills: Matt Pocock's `prototype`, and the `artifact-design`, `artifact-diagramming` and `dataviz` skills.
 
@@ -78,7 +60,7 @@ Not built for now: the user asks for the implementation directly ("implement Tas
 
 ## Personal layer (`ai-setup`)
 
-A personal git repo that travels between the user's machines: preferences in `AGENTS.md` (open format, any harness), `CLAUDE.md` with only `@AGENTS.md`, personal hooks in `hooks/`, and the devflow config (`devflow.json`) instead of `~/.config/devflow/config.json`. Until then, guardrails are written straight into `~/.claude` (global) or the repository's `.claude/` (local).
+A personal git repo that travels between the user's machines: preferences in `AGENTS.md` (open format, any harness), `CLAUDE.md` with only `@AGENTS.md`, personal hooks in `hooks/`, and the devflow config (`devflow.json`) instead of `~/.config/devflow/config.json`. Until then, guardrails are written straight into the user's global `~/.claude` (a repository scope is a separate backlog item).
 
 Decided so far:
 - Name: `ai-setup`, private on the user's GitHub, cloned at `~/dev/ai-setup`.
