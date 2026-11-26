@@ -26,7 +26,7 @@ Requirements: `gh` authenticated and Python 3 with PyYAML (knowledge Area).
 ## Install
 
 ```
-/plugin marketplace add <path-or-git-url-of-this-repo>
+/plugin marketplace add lucasvillatore/devflow
 /plugin install devflow@devflow
 /devflow:setup
 ```
