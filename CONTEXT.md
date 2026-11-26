@@ -41,7 +41,7 @@ The user's own git repo (e.g. `ai-setup`) with preferences (`AGENTS.md`), person
 _Avoid_: dotfiles, profile
 
 **Guardrail**:
-A rule that steers the agent, created from feedback: a hook when the rule is mechanical, an instruction when it needs judgement, a Vault convention when it belongs to the team.
+A rule that steers the agent, created from feedback: a hook when the rule is mechanical, a rule file (`~/.claude/rules/`) when it needs judgement, a Vault convention when it belongs to the team.
 _Avoid_: lint rule, policy
 
 **Tracker status**:
@@ -53,7 +53,7 @@ _Avoid_: Task status
 - An **Issue** is planned into one or more **Tasks**; all of them live in its **Issue workspace**.
 - **Components** talk only through **Contracts**.
 - The setup reads the devflow config and the **Vault** and wires the machine; it never writes into devflow itself.
-- A **Guardrail** is saved in `~/.claude` (global) or in a repository's `.claude/` (local), never in devflow. Once the **Personal layer** exists, global Guardrails move there.
+- A **Guardrail** is saved in `~/.claude` (global), never in devflow; a repository scope may come later. Once the **Personal layer** exists, global Guardrails move there.
 - The **Issue workspace** lives inside the **Vault** but is not part of its knowledge.
 
 ## Flagged ambiguities

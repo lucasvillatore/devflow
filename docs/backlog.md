@@ -15,10 +15,6 @@ Not built for now: the user asks for the implementation directly ("implement Tas
 - Closing: Task `done`, its box checked in the Planning, `log.md` entry with the commit hash; `blocked` with the reason when stopped.
 - Parallel Tasks in worktrees: later (the worktree starts from the default branch, not the Task's).
 
-## add-guardrail (base, v0)
-
-The user describes a behavior or code pattern they disliked; the skill picks the mechanism (hook, CLAUDE.md rule, Vault convention), asks repository or global, and writes a self-contained hook with a test case.
-
 ## awsq and dbq (investigate, v0)
 
 Move the scripts into the plugin's `bin/`, company data (AWS profiles, database names) into `<vault>/devflow/investigate/`, credentials stay in `pass`.
@@ -48,6 +44,10 @@ Draft of the preferences `AGENTS.md` (from the user's current workflow):
 ```
 
 The current personal hooks are in `~/.claude/hooks/` (`guardrails.py` plus 6 rules).
+
+## Guardrails per repository
+
+`add-guardrail` writes only to the user's global `~/.claude/`. Later: a repository scope, either personal (script in `~/.claude/hooks/`, registered in the repository's `.claude/settings.local.json`) or the team's (in the repository's `.claude/`, committed).
 
 ## Review stage (development)
 

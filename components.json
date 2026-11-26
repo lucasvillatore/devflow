@@ -4,7 +4,8 @@
       "required": true,
       "skills": [
         "setup",
-        "ask"
+        "ask",
+        "add-guardrail"
       ]
     },
     "issue": {
