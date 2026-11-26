@@ -5,7 +5,8 @@ Usage:
   python3 complexity.py measure <path>... [--function <name>] [--out <file.json>]
   python3 complexity.py compare <before.json> <after.json>
 
-measure: one entry per function: file, function, start, end, ccn (cyclomatic complexity), nloc, params.
+measure: one entry per function: file (relative to the repository root), function, start, end, ccn (cyclomatic complexity), nloc, params.
+Measure whole files for a refactoring: functions extracted by it must be counted in "after".
 compare: a Markdown table of the functions that changed, appeared or disappeared, plus the totals.
 lizard comes from devflow's tools (python3 tools.py install lizard). Standard library only.
 """
@@ -17,6 +18,17 @@ import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOTS = {}
+
+
+def relative(path):
+    """Path relative to the repository root (git), so measurements taken from different folders compare."""
+    path = os.path.abspath(path)
+    folder = os.path.dirname(path)
+    if folder not in ROOTS:
+        result = subprocess.run(["git", "-C", folder, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+        ROOTS[folder] = result.stdout.strip() if result.returncode == 0 else os.getcwd()
+    return os.path.relpath(path, ROOTS[folder])
 
 
 def lizard():
@@ -37,7 +49,7 @@ def measure(paths, function=None):
         nloc, ccn, _tokens, params, _length, _location, path, name, _long, start, end = row[:11]
         if function and name != function and not name.endswith("::" + function):
             continue
-        rows.append({"file": os.path.relpath(path), "function": name, "start": int(start), "end": int(end),
+        rows.append({"file": relative(path), "function": name, "start": int(start), "end": int(end),
                      "ccn": int(ccn), "nloc": int(nloc), "params": int(params)})
     return sorted(rows, key=lambda r: (-r["ccn"], r["file"], r["start"]))
 

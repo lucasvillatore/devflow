@@ -16,17 +16,11 @@ Open questions: does the user create epics and stories in Jira, or does that go 
 
 An agent that did not take part in building devflow reviewed the whole repository. All tests passed. To fix, most severe first:
 
-Fixed: 1 (files found by `type`), 2 (shared `references/tasks.md`), 3 (open-pr evidence sources, Decisions section in the Task template), 4 (closing a Task, manual in `flow.md` until dev-task; refactor closes its own Task).
+Fixed: 1 (files found by `type`), 2 (shared `references/tasks.md`), 3 (open-pr evidence sources, Decisions section in the Task template), 4 (closing a Task, manual in `flow.md` until dev-task; refactor closes its own Task), 5 and 6 (`awsq` exits 75 only on an expired session; failed login reported), 7 (whole-file measurement, repository-relative paths), 10 (no Start log entry), 11 (draw always saves), 12 (`dbq` tells a missing entry from a GPG failure); `bin/` scripts tested in `scripts/test_bin.py`.
 
 **Medium**
-5. `awsq` uses exit 2 for an expired session, but `aws` also exits 2 on argument errors: use its own code (e.g. 75) or match the stderr text.
-6. `awsq login`: `grep | tail` under `set -euo pipefail` exits silently when the login log has no code; add `|| true`.
-7. refactor measures "after" with `--function`, hiding complexity moved into extracted functions; `complexity.py` stores paths relative to the current folder instead of the repository root.
 8. `kb_verify.py`: crashes on non-mapping frontmatter and on invalid YAML in reserved files; empty frontmatter passes.
 9. `setup.py check` flags any template file the user deleted or renamed, forever; leave content folders out of `check`.
-10. `references/workspace.md` adds a `**Start**` log entry, against the log.md rule.
-11. `workspace.md` and `draw` disagree on whether draw always saves in the workspace (the user wants always).
-12. `dbq` hides every `pass` failure (a locked GPG agent included) as "not in the pass store".
 
 **Low**
 13. README lists dev-task (does not exist), leaves out retro and the experimental Area, names 2 of the 4 tests: point to `/devflow:ask` or generate from components.json.
@@ -42,7 +36,7 @@ Fixed: 1 (files found by `type`), 2 (shared `references/tasks.md`), 3 (open-pr e
 23. `setup.py`: a CLAUDE.md with the start marker but no end marker gets a second block.
 24. refactor tells the agent to run `/devflow:draw` mid-skill, against "Components never call each other".
 
-**Structural**: the "find by type" rule (done) also covers 16 and 21; `bin/` scripts need tests with fake `aws` and `pass`; README, backlog and CONTEXT drift from components.json.
+**Structural**: the "find by type" rule (done) also covers 16 and 21; README, backlog and CONTEXT drift from components.json.
 
 ## Visual views
 

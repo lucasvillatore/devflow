@@ -11,7 +11,7 @@ Before the first command, run `awsq profiles` and read the repository profile `<
 
 ## Expired session
 
-When a command exits with code 2 (`SSO: session expired`):
+When a command exits with code **75** and prints `SSO: session expired` (any other code is an error from the `aws` CLI itself: read its message, do not log in again):
 
 1. Run `awsq login`. It starts the login in the background and prints the approval link and code.
 2. Give the link to the user to approve in the browser.

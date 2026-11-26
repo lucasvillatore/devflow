@@ -5,7 +5,18 @@
 set -euo pipefail
 [[ $# -ge 3 ]] || { echo "usage: dbq <project> <env> <name> [client args]" >&2; exit 2; }
 entry="$1/$2/db/$3"; shift 3
-uri=$(pass show "$entry" 2>/dev/null | head -n1) || { echo "dbq: '$entry' is not in the pass store" >&2; exit 1; }
+err=$(mktemp); trap 'rm -f "$err"' EXIT
+if ! uri=$(pass show "$entry" 2>"$err"); then
+  if grep -q "is not in the password store" "$err"; then
+    echo "dbq: '$entry' is not in the pass store (list the entries with: pass ls)" >&2
+  else
+    echo "dbq: pass could not read '$entry' (is the GPG agent locked? unlock it in your terminal):" >&2
+    head -n3 "$err" >&2
+  fi
+  exit 1
+fi
+uri=${uri%%$'\n'*}
+rm -f "$err"; trap - EXIT
 
 case "$uri" in
   mongodb://*|mongodb+srv://*)

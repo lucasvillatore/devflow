@@ -16,7 +16,7 @@ Workspace: `references/workspace.md` (an Issue key or a name). The evidence live
 
 1. **Tools.** Run `python3 <plugin>/scripts/tools.py check lizard`. When missing, show the install command it prints and run it only after the user agrees. Mutation tools (`stryker`, `infection`, `gremlins`, `pit`) are optional: check them only if the user wants mutation testing; project tools are never installed by you, only suggested.
 
-2. **Target, level and contract.** The target comes from the argument, a Task from `refactor-plan`, or an analysis finding (`type: Analysis` in the workspace). Say whether it is a function or a class and state its contract, following `references/refactor-contracts.md`. A target bigger than a class: stop and suggest `/devflow:refactor-plan`. Measure: `python3 <plugin>/scripts/complexity.py measure <file> [--function <name>] --out <evidence>/before.json`. Show the numbers (CCN = number of independent paths; each path needs a test).
+2. **Target, level and contract.** The target comes from the argument, a Task from `refactor-plan`, or an analysis finding (`type: Analysis` in the workspace). Say whether it is a function or a class and state its contract, following `references/refactor-contracts.md`. A target bigger than a class: stop and suggest `/devflow:refactor-plan`. Measure the **whole file** of the target (not only the function, so the functions extracted later are counted): `python3 <plugin>/scripts/complexity.py measure <file> --out <evidence>/before.json`. Show the target's numbers (CCN = number of independent paths; each path needs a test).
 
 3. **Pin the current behavior.** Before touching the code:
    - find the existing tests of the target and run them;
@@ -33,7 +33,7 @@ Workspace: `references/workspace.md` (an Issue key or a name). The evidence live
 6. **Prove.**
    - the characterization and existing tests: green;
    - run the harness again into `<evidence>/after.jsonl`, then `python3 <plugin>/scripts/equivalence.py <evidence>/before.jsonl <evidence>/after.jsonl`: it must say `EQUIVALENT`;
-   - `complexity.py measure ... --out <evidence>/after.json` and `complexity.py compare <evidence>/before.json <evidence>/after.json`;
+   - `complexity.py measure <the same file> <any new file the refactoring created> --out <evidence>/after.json`, then `complexity.py compare <evidence>/before.json <evidence>/after.json`. Report the target **and** the functions extracted from it: complexity that only moved to a new function did not go away. The gain is the highest CCN among them and how the paths are split, not the target's CCN alone;
    - branch coverage again;
    - optional: mutation testing on the target, when the user wants it.
    When anything is not equivalent, show the difference and go back to step 5. Never claim equivalence without the `EQUIVALENT` line.

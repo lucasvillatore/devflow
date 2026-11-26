@@ -24,5 +24,5 @@ dbq shop stg cache --scan --pattern 'session:*' | head -20                      
 - **Read-only by default.** Before any write (`insert`, `update`, `delete`, `drop`, `UPDATE`, `DELETE`, `ALTER`, `TRUNCATE`, `SET`, `DEL`, `FLUSH*`...), show the exact command and ask for explicit confirmation, above all in production.
 - Always limit results (`LIMIT`, `.limit()`, `| head`); prefer counts and aggregations to dumping collections.
 - When the environment is unclear, use a test environment before production, or ask.
-- If `dbq` hangs or fails asking for the GPG passphrase, ask the user to unlock the store in their terminal (e.g. typing `! pass show <entry> >/dev/null` at the prompt) and try again.
-- `is not in the pass store`: run `pass ls` and check the name with the user.
+- `pass could not read` (or `dbq` hangs): the GPG agent is locked. Ask the user to unlock the store in their terminal (e.g. typing `! pass show <entry> >/dev/null` at the prompt) and try again. Do not look for another entry name.
+- `is not in the pass store`: the name is wrong; run `pass ls` and check the name with the user.

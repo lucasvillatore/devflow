@@ -3,16 +3,19 @@
 #
 #   awsq <env> <role> <aws args...>   run aws with the profile mapped to <env>/<role>
 #   awsq login                        start the SSO login and print the approval link
-#   awsq status                       tell whether the SSO session is valid (exit 2 when expired)
+#   awsq status                       tell whether the SSO session is valid (exit 75 when expired)
 #   awsq profiles                     list the mapped profiles and what each is for
 #
 # Profiles come from <vault>/devflow/investigate/aws.json (Vault path in ~/.config/devflow/config.json):
 #   {"sso_session": "my-sso", "profiles": {"stg/developer": {"profile": "my-stg", "use_for": "..."}}}
 # The first profile is used to check the session. Credentials never leave the AWS CLI cache.
+# Exit 75 always means "SSO session expired"; any other code comes from the aws CLI itself.
 
 set -euo pipefail
 
+EXPIRED=75
 STATE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/awsq"
+LOGIN_WAIT="${AWSQ_LOGIN_WAIT:-30}"
 LOGIN_LOG="$STATE_DIR/login.log"
 
 usage() {
@@ -60,7 +63,7 @@ cmd_status() {
     echo "SSO: session valid"
   else
     echo "SSO: session expired (run: awsq login)"
-    exit 2
+    exit "$EXPIRED"
   fi
 }
 
@@ -75,13 +78,13 @@ cmd_login() {
   mkdir -p "$STATE_DIR"
   pkill -f "aws sso login --sso-session $session" 2>/dev/null || true
   nohup aws sso login --sso-session "$session" --use-device-code --no-browser >"$LOGIN_LOG" 2>&1 &
-  for _ in $(seq 1 30); do
+  for _ in $(seq 1 "$LOGIN_WAIT"); do
     grep -q "autofill" "$LOGIN_LOG" 2>/dev/null && break
     sleep 0.5
   done
   local code url
-  code=$(grep -A2 "enter the code" "$LOGIN_LOG" | tail -1)
-  url=$(grep -A1 "autofill" "$LOGIN_LOG" | tail -1)
+  code=$(grep -A2 "enter the code" "$LOGIN_LOG" | tail -1 || true)
+  url=$(grep -A1 "autofill" "$LOGIN_LOG" | tail -1 || true)
   if [[ -z "$url" ]]; then
     echo "awsq: could not start the login. Output:" >&2
     cat "$LOGIN_LOG" >&2
@@ -111,7 +114,7 @@ case "$1" in
     shift 2
     if ! session_valid; then
       echo "SSO: session expired. Run 'awsq login' and approve the link." >&2
-      exit 2
+      exit "$EXPIRED"
     fi
     exec aws --profile "$profile" "$@"
     ;;

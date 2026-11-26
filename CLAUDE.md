@@ -49,7 +49,7 @@ Then classify the request: it **exists** (point to it), it **extends** something
 Run every test:
 
 ```bash
-python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py && python3 scripts/test_guardrail.py && python3 scripts/test_refactor_tools.py
+python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py && python3 scripts/test_guardrail.py && python3 scripts/test_refactor_tools.py && python3 scripts/test_bin.py
 ```
 
 Check that `python3 scripts/catalog.py` lists the change in the right Area. When a change affects the user's machine (the CLAUDE.md block from `references/flow.md`, settings, new Vault files), say so: the user runs `/devflow:setup` or the setup script applies it. Commit and push only when the user asks.
