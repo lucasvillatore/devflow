@@ -28,9 +28,15 @@ Go through the session looking for:
 - **Tool economy**: expensive or repeated tool calls (huge outputs, the same search many times, a slow command) that a narrower command or a small script would replace.
 - **Steering files**: instructions in `~/.claude/CLAUDE.md`, `~/.claude/rules/`, the repository's `CLAUDE.md` or the Vault conventions that were ignored, contradicted each other, or change nothing (no-ops). Large steering files are a finding by themselves.
 - **devflow gaps**: a skill missing a step, asking the wrong thing, or a step the user had to do by hand every time.
-- **Missing knowledge**: facts the session had to discover (a business rule, a term, a repository's quirk, a command, how to reach some data) that are not in the Vault. Check the Vault before listing one.
+- **Missing knowledge**: facts the session had to discover that are not in the Vault. Look in particular for:
+  - **diverging terms**: a term used differently from the glossary, or two names for the same thing (a candidate for a glossary entry or a flagged ambiguity);
+  - **walked paths**: a flow followed end to end while investigating (e.g. cart → coupon → price calculation) that is not a journey, or is a step missing from an existing journey;
+  - **rules found in code**: a business rule understood only by reading the code (keep the `file:line` as evidence, the format `kb-context` uses);
+  - **operational facts**: a repository's quirk, a command, how to reach some data.
 
 Drop anything that happened once for a reason that will not repeat.
+
+**Check the Vault** before listing a knowledge candidate: search the glossary, the business contexts and the journeys for it. With more than five candidates, send the list to one read-only search agent (Explore) with the Vault path, asking for each candidate only "exists in <file>", "partly in <file>" or "missing"; with fewer, search yourself. Drop what already exists; keep "partly" as an update to that file.
 
 ## 2. Show the list
 
