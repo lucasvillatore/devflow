@@ -47,7 +47,8 @@
       "skills": [
         "draw",
         "analyze",
-        "diagnose"
+        "diagnose",
+        "investigate-issue"
       ]
     }
   }
