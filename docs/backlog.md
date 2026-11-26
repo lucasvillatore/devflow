@@ -2,13 +2,9 @@
 
 Items deferred on purpose, and the v0 Components not built yet.
 
-## plan-issue (planning, v0)
-
-Interview in rounds until no decision is open, then write the planning Task and one Task per deliverable in the Issue workspace, with `depends_on` between them.
-
 ## dev-task (development, v0)
 
-Run one Task: read the surrounding code patterns, describe the change and wait for the go, implement, validate only the changed files, commit, mark the Task `done`.
+Run one Task: read the surrounding code patterns, describe the change and wait for the go, implement, validate only the changed files, commit, mark the Task `done` and check its box in the Planning.
 
 ## open-pr (delivery, v0)
 

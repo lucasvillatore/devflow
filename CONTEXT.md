@@ -16,6 +16,10 @@ _Avoid_: subtask, step
 The folder `<vault>/issues/<ISSUE-KEY>/`, ignored by the Vault's git, where every artifact of an Issue lives: `index.md` (the Issue), `log.md` (dated events) and one file per Task. All of them use OKF frontmatter, so agents and Obsidian can query status and dependencies like a local tracker.
 _Avoid_: scratch folder, work dir
 
+**Planning**:
+The first Task of an Issue workspace (`1-planning.md`, named in the Vault's language): the decisions of the interview, what is left to record in the Vault, and a checklist linking every Task.
+_Avoid_: plan file, spec
+
 **Contract**:
 A file in the Issue workspace that one Component writes and another reads (e.g. the Issue's `index.md`, `N-<task>.md`). Components depend on Contracts, never on each other.
 _Avoid_: handoff, interface

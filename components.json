@@ -13,7 +13,9 @@
       ]
     },
     "planning": {
-      "skills": []
+      "skills": [
+        "plan-issue"
+      ]
     },
     "development": {
       "skills": []
