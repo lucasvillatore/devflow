@@ -2,7 +2,7 @@
 
 The formats `/devflow:draw` can suggest. To add one, add an entry; mark it **planned** until the skill can produce it.
 
-Mermaid formats are shown in the zoomable page (`templates/draw/viewer.html`: zoom, fit, drag; published as a private Artifact or opened locally) and saved as text in the Vault.
+Mermaid formats are shown in the zoomable page (`templates/draw/viewer.html`: zoom, fit, drag), saved in the workspace under `diagrams/` and opened locally.
 
 ## Mermaid flowchart (available)
 

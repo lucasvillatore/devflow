@@ -29,22 +29,21 @@ Three stops, in order: **analysis**, **suggestion**, **drawing**. The user picks
 
    In the chosen format, following the Vault's `.kb/diagrams.md` when it exists (colors per state, solid line for the normal path, dashed for a detour or an inferred link). At most about 12 nodes per diagram. Each node: the concept name and, on a second line, the `file:line` range (`calc[Compute price<br/>cart.service.ts:120-210]`). Under the diagram, a short legend: one line per block saying what it does.
 
-4. **Show it with zoom.** Every diagram goes into the zoomable page (a frame per diagram with zoom in/out, fit and drag, like draw.io): write the data (title, subtitle, the diagrams with their legend, and the explanation for a before/after, before and after sharing a `pair` id so they render side by side) to a JSON file in the scratchpad, then run `python3 <plugin>/scripts/draw_view.py <data.json> <page.html>`.
-   - When the Artifact tool is available, publish the page as a private Artifact (reuse the same file path for later versions of the same drawing, so the link stays the same) and give the user the link.
-   - Otherwise add `--open` to open it in the browser, and give the path.
-   Also show the Mermaid source in the conversation, short.
+4. **Show it with zoom.** Every drawing becomes a zoomable page (a frame per diagram with zoom in/out, fit and drag, like draw.io), always saved in the workspace (`references/workspace.md`; ask for a name if the session has none):
+   - write the data (title, subtitle, the diagrams with their legend, and the explanation for a before/after, before and after sharing a `pair` id so they render side by side) to `<vault>/issues/<id>/diagrams/<slug>.json` (folder name in the configured language, e.g. `diagramas/`);
+   - run `python3 <plugin>/scripts/draw_view.py <that json> <same folder>/<slug>.html --open`, which writes the page next to the data and opens it in the browser;
+   - redrawing the same thing overwrites the same `<slug>` files.
+   Publish it as an Artifact only if the user asks. Also show the Mermaid source in the conversation, short.
 
-5. **Save.** Ask where to save it, suggesting the place it will be read again:
+5. **Also keep it in the knowledge?** When the drawing explains something that outlives this work, offer to copy the Mermaid source to where it will be read again, and write only if the user agrees:
    - a business flow → the knowledge base (suggest `/devflow:kb-journey` or `/devflow:kb-context` to fold it into a journey or context);
-   - a technical flow of a repository → its profile `<vault>/devflow/projects/<repo>.md`, under a `## Diagrams` section;
-   - something only this work needs → `<vault>/issues/<id>/diagrams.md` (or inside `investigation.md` when it exists).
-   Write only after the user picks. The Mermaid source is what is saved in the Vault (Obsidian renders it); add the Artifact link under it when there is one.
+   - a technical flow of a repository → its profile `<vault>/devflow/projects/<repo>.md`, under a `## Diagrams` section, with a link to the page.
 
 6. **Feedback.** Ask what helped and what did not (format, size, grouping, missing detail). When the answer changes how diagrams should be drawn or which format fits which case, offer to record it in the Vault's `.kb/diagrams.md` or propose a change to `references/draw-formats.md`.
 
 ## Before/after
 
-When the argument asks for a before/after, or the user picks one improvement from an analysis, draw the same part of the code twice, side by side: **before** (as it is) and **after** (with the improvement). Same layout and names in both so only the change stands out: what is removed or changed in `bad`, what is new in `ok`. Steps 1, 2, 4, 5 and 6 still apply (the map, the format the user picks, the zoomable page, where to save, feedback). Under the two diagrams, the explanation, always in this order:
+When the argument asks for a before/after, or the user picks one improvement from an analysis, draw the same part of the code twice, side by side: **before** (as it is) and **after** (with the improvement). Same layout and names in both so only the change stands out: what is removed or changed in `bad`, what is new in `ok`. Steps 1, 2, 4, 5 and 6 still apply (the map, the format the user picks, the zoomable page in the workspace, keeping it in the knowledge, feedback). Under the two diagrams, the explanation, always in this order:
 
 1. **What changes**: one line per block that enters, leaves or moves.
 2. **Why**: each reason with its basis, strongest first:
