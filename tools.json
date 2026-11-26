@@ -1,0 +1,34 @@
+{
+  "lizard": {
+    "purpose": "cyclomatic complexity, lines and parameters per function (TS, JS, PHP, Go, Java and more)",
+    "kind": "devflow",
+    "pip": "lizard==1.26.1",
+    "check": ["{venv}/bin/lizard", "--version"],
+    "run": "{venv}/bin/lizard"
+  },
+  "stryker": {
+    "purpose": "mutation testing for TS/JS",
+    "kind": "project",
+    "check": ["npx", "--no-install", "stryker", "--version"],
+    "install": "npm install --save-dev @stryker-mutator/core (plus the runner: @stryker-mutator/jest-runner or @stryker-mutator/vitest-runner), then npx stryker init"
+  },
+  "infection": {
+    "purpose": "mutation testing for PHP",
+    "kind": "project",
+    "check": ["vendor/bin/infection", "--version"],
+    "install": "composer require --dev infection/infection (needs pcov or Xdebug for coverage)"
+  },
+  "gremlins": {
+    "purpose": "mutation testing for Go",
+    "kind": "user",
+    "check": ["gremlins", "--version"],
+    "install_cmd": ["go", "install", "github.com/go-gremlins/gremlins/cmd/gremlins@latest"],
+    "install": "go install github.com/go-gremlins/gremlins/cmd/gremlins@latest"
+  },
+  "pit": {
+    "purpose": "mutation testing for Java",
+    "kind": "project",
+    "check": null,
+    "install": "add the pitest-maven plugin (org.pitest:pitest-maven) or the Gradle plugin info.solidsoft.pitest to the build, then run mvn org.pitest:pitest-maven:mutationCoverage or gradle pitest"
+  }
+}

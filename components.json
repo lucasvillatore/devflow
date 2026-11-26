@@ -48,7 +48,8 @@
         "draw",
         "analyze",
         "diagnose",
-        "investigate-issue"
+        "investigate-issue",
+        "refactor"
       ]
     }
   }
