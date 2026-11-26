@@ -73,8 +73,30 @@ def status():
         "devflow_deny_rules": [r for r in settings.get("permissions", {}).get("deny", []) if r.startswith(SKILL_PREFIX)],
         "claude_md_block": START in read_text(CLAUDE_MD),
         "pyyaml": importlib.util.find_spec("yaml") is not None,
+        "up_to_date": up_to_date(config),
+        "tools": tools_status(),
     }
     print(json.dumps(report, indent=2, ensure_ascii=False))
+
+
+def up_to_date(config):
+    if not config or not config.get("vault"):
+        return False
+    try:
+        current, wanted = claude_md_plan(config["vault"])
+    except BrokenBlock:
+        return False
+    settings_old, settings_new = settings_plan(config.get("areas", []))
+    return current == wanted and settings_old == settings_new and not vault_plan(config.get("language", "en"), config["vault"])
+
+
+def tools_status():
+    import subprocess
+    result = subprocess.run([sys.executable, os.path.join(PLUGIN, "scripts", "tools.py"), "check"], capture_output=True, text=True)
+    try:
+        return {name: info["installed"] for name, info in json.loads(result.stdout).items() if info["kind"] != "project"}
+    except ValueError:
+        return {}
 
 
 def vault_plan(language, vault):
