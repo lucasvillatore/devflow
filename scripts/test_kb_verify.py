@@ -67,7 +67,7 @@ CASES = {
 
 for language, case in CASES.items():
     with tempfile.TemporaryDirectory() as base:
-        shutil.copytree(os.path.join(PLUGIN, "templates", "kb", language, ".kb"), os.path.join(base, ".kb"))
+        shutil.copytree(os.path.join(PLUGIN, "templates", "vault", language, ".kb"), os.path.join(base, ".kb"))
         for rel, content in case["files"].items():
             path = os.path.join(base, rel)
             os.makedirs(os.path.dirname(path), exist_ok=True)

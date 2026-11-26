@@ -52,8 +52,12 @@ Investigate component, once the connector authentication works.
 
 ## Company-specific kb configuration
 
-The previous `kb-framework` (at `~/MadeiraMadeira/kb-framework/modelo-configuracao/.kb/`) has the MadeiraMadeira configuration: system terms (product-hub, iron-man, war-machine…), process part folders (`Tipos de validação`, `Etapas da publicação`) and examples from the real base. When the Vault is created, apply it on top of the generic `pt-BR` template (keys translated to the new `base.yaml` format). Only then delete `kb-framework`.
+When a Vault is created for a company, its own kb configuration (system terms, process part folders, examples from the real base) is applied on top of the generic template, with keys in the `base.yaml` format.
 
-## Existing knowledge base
+## Existing knowledge bases
 
-`~/MadeiraMadeira/docs/Base de conhecimento/` is not part of the Vault yet. The user decides later whether to migrate it.
+A knowledge base that already exists outside the Vault is not migrated automatically. The user decides later whether to bring it in.
+
+## More than one Vault per machine
+
+The setup is per machine and points to a single Vault, so personal and company projects on the same computer share conventions and glossary. Options when it matters: a file in the repository pointing to another Vault, or one Vault per root folder (e.g. `~/work` → Vault A, `~/dev` → Vault B).

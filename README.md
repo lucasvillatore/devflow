@@ -27,7 +27,11 @@ See [CONTEXT.md](CONTEXT.md) for the vocabulary, [docs/adr](docs/adr) for the st
 | investigate | `awsq`, `dbq` |
 | knowledge | `kb-context`, `kb-journey`, `kb-review`, `kb-verify`, `kb-close` (required) |
 
-Status: knowledge Area migrated; the other Components are added one by one.
+Status: `setup` and the knowledge Area are done; the other Components are added one by one.
+
+Areas and their skills are listed in [components.json](components.json); the setup turns Areas on and off from it. Vault skeletons per language are in `templates/vault/`.
+
+Tests: `python3 scripts/test_setup.py && python3 scripts/test_kb_verify.py`.
 
 Requirements: `gh` authenticated and Python 3 with PyYAML (knowledge Area).
 

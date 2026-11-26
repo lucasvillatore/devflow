@@ -1,0 +1,10 @@
+{
+  "areas": {
+    "issue": { "skills": [] },
+    "planning": { "skills": [] },
+    "development": { "skills": [] },
+    "delivery": { "skills": [] },
+    "investigate": { "skills": [] },
+    "knowledge": { "required": true, "skills": ["kb-context", "kb-journey", "kb-review", "kb-verify", "kb-close"] }
+  }
+}

@@ -1,0 +1,3 @@
+# Glossário
+
+## A definir
