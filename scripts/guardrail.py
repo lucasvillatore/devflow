@@ -6,7 +6,7 @@ Usage:
   python3 guardrail.py register <hook.py> [--matcher "Edit|Write|MultiEdit"] [--dry-run]
 
 Cases file: [{"name": "...", "expect": "block" | "allow", "payload": {"tool_name": "Edit", "tool_input": {...}}}]
-A case blocks when the hook exits with 2 or prints a PreToolUse "deny" decision.
+A case blocks when the hook exits with 2 or prints a PreToolUse "deny" or "ask" decision.
 Standard library only.
 """
 import argparse
@@ -30,7 +30,7 @@ def blocked(result):
         output = json.loads(result.stdout or "{}")
     except ValueError:
         return False
-    return (output.get("hookSpecificOutput") or {}).get("permissionDecision") == "deny"
+    return (output.get("hookSpecificOutput") or {}).get("permissionDecision") in ("deny", "ask")
 
 
 def test(args):

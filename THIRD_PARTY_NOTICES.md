@@ -2,7 +2,7 @@
 
 ## mattpocock/skills
 
-`references/grilling.md` is adapted from the `grilling` skill of Matt Pocock's skills (https://github.com/mattpocock/skills), under the MIT License:
+`references/grilling.md` is adapted from the `grilling` skill, and the categories of `skills/retro/SKILL.md` from the `retro` skill, of Matt Pocock's skills (https://github.com/mattpocock/skills), under the MIT License:
 
 ```
 MIT License

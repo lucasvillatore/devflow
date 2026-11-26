@@ -6,6 +6,16 @@ Items deferred on purpose, and the v0 Components not built yet.
 
 A step between `pick-issue` and `plan-issue` for Issues whose cause is not known yet: planning asked questions the user could not answer before understanding how the system works. Explores on purpose (code in the Issue's `paths`, `awsq`/`dbq` read-only, reproduction), based on Matt Pocock's `diagnosing-bugs` (a red-capable feedback loop before any hypothesis). Writes `issues/<KEY>/investigation.md` (not a Task): how it works today with `file:line` evidence marked confirmed or inferred, reproduction, root cause or live hypotheses, open questions, knowledge to record. `plan-issue` reads it, and offers to pause and investigate when the user answers "I don't know". Also usable without an Issue.
 
+## to-spec, to-tickets and triage (new work on the tracker)
+
+Based on Matt Pocock's skills of the same name, with Jira (from `tracker.md`) in place of his tracker setup. To explore:
+
+- **to-spec**: turn a conversation that already happened (no new interview) into a spec (problem, solution, user stories, implementation decisions without file paths, testing decisions, out of scope) and create it in the tracker as an epic or story.
+- **to-tickets**: split a spec or plan into vertical-slice tickets (each crosses every layer, is demoable alone, fits one session), with "is blocked by" links; show the breakdown and iterate on granularity and blockers before creating anything. Tickets are the team's (tracker); Tasks stay internal to an Issue. Flow for new work: conversation → to-spec → to-tickets → each ticket goes through pick-issue → plan-issue.
+- **triage**: a state machine for incoming Issues (category bug/enhancement; needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix): check whether it is already built or was rejected before, reproduce the bug, grill if needed, and end with an agent brief, a "we need this from you" comment, or a close with the reason. Useful when the user triages the team's bugs.
+
+Open questions: does the user create epics and stories in Jira, or does that go through the PO (then generate text to paste instead of publishing)? Does the user triage bugs? Mapping of states to Jira statuses or labels, and of "blocked by" to the Jira link type.
+
 ## dev-task (development)
 
 Not built for now: the user asks for the implementation directly ("implement Task 2 of ABC-123"). Build it if keeping statuses, validation and commits consistent by hand gets tiresome. Draft decisions:

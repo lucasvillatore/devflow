@@ -7,7 +7,7 @@ argument-hint: "[ISSUE-KEY, only to pick where retro.md is saved]"
 
 # Retro
 
-Look back at this session and turn what went wrong into lasting fixes. The session is the evidence: quote it. Speak the user's language.
+Look back at this session and turn what went wrong into lasting fixes to the environment: checks, pointers, access, conventions. Categories adapted from Matt Pocock's `retro` (MIT, see `THIRD_PARTY_NOTICES.md`). The session is the evidence: quote it. Speak the user's language.
 
 ## Before starting
 
@@ -22,6 +22,11 @@ Go through the session looking for:
 - **Corrections**: the user said something was wrong, asked to redo, undid a change, or repeated an instruction.
 - **Friction**: questions the user could not answer, back-and-forth on something that was already known, long detours, permission prompts that kept coming back.
 - **Rule breaks**: something done against the user's preferences, the Vault conventions or a devflow skill's steps (an edit without confirmation, a write in production, a file outside the Task).
+- **Navigation**: the agent took long to find a file, a command or where something lives. A pointer (repository profile, Vault convention) would have saved it.
+- **Automated checks**: a mistake a check could have caught (lint, types, tests, a hook). Look at what the repository already has first (`package.json` scripts, pre-commit, CI): a check that exists but is not wired or is broken is the finding. A repository with no check at all is a finding too.
+- **Information access**: something the agent needed and could not see (logs, data, a service, a document). Could it get read-only access next time?
+- **Tool economy**: expensive or repeated tool calls (huge outputs, the same search many times, a slow command) that a narrower command or a small script would replace.
+- **Steering files**: instructions in `~/.claude/CLAUDE.md`, `~/.claude/rules/`, the repository's `CLAUDE.md` or the Vault conventions that were ignored, contradicted each other, or change nothing (no-ops). Large steering files are a finding by themselves.
 - **devflow gaps**: a skill missing a step, asking the wrong thing, or a step the user had to do by hand every time.
 - **Missing knowledge**: facts the session had to discover (a business rule, a term, a repository's quirk, a command, how to reach some data) that are not in the Vault. Check the Vault before listing one.
 
@@ -40,10 +45,14 @@ In two groups, highest severity first. Severity: **high** (wrong result, risk, o
 ```
 
 Where the fix goes:
-- a rule about Claude's behavior or code → **guardrail**: `/devflow:add-guardrail "<the rule>"`;
-- a team rule → **Vault convention** (`<vault>/devflow/conventions.md`);
-- a repository fact (command, branch, resource) → **repository profile** (`<vault>/devflow/projects/<repo>.md`);
+- a **mechanical** rule (a fixed pattern, a banned call, a file location) → a deterministic check: **guardrail** hook, `/devflow:add-guardrail "<the rule>"`, or, when it is the team's, a lint rule or CI job in the repository (suggest it; the repository is the team's);
+- a **judgement** rule about Claude's behavior → **guardrail** as a rule file (`/devflow:add-guardrail` picks it);
+- a team rule that needs judgement → **Vault convention** (`<vault>/devflow/conventions.md`);
+- a repository fact (command, branch, resource, where things live) → **repository profile** (`<vault>/devflow/projects/<repo>.md`);
+- an instruction that is a no-op or contradicts another → **remove or merge it**, in the file where it lives;
 - a devflow skill that should behave differently → **devflow issue** (draft in English, same format as `/devflow:ask`, on the repository shown by `python3 <plugin>/scripts/catalog.py`).
+
+Prefer a check to an instruction: an instruction costs context in every session and can be ignored; a check costs nothing until it fires.
 
 **Missing knowledge**, one line each: the fact, where it belongs (glossary term, business rule, journey, repository profile, investigate notes) and the evidence.
 
