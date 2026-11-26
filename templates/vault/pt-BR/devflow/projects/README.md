@@ -1,3 +1,15 @@
 # Perfis de repositório
 
-Um arquivo por repositório (`<repo>.md`): branch default, comandos de teste, lint e build, pipeline de staging e o que mais for específico dele.
+Um arquivo por repositório (`<repo>.md`, com o nome da pasta do repo). As skills do devflow leem e completam estes arquivos; quando falta um campo, perguntam e gravam.
+
+```markdown
+# <repo>
+
+- Branch default: main
+- Testes dos arquivos alterados: <comando, com {files}>
+- Lint dos arquivos alterados: <comando, com {files}>
+- Build: <comando>
+- Suíte completa: <comando>
+```
+
+Acrescente o que mais for específico do repo (pipeline de staging, recursos, cuidados).

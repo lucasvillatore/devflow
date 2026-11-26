@@ -21,7 +21,9 @@
       "skills": []
     },
     "delivery": {
-      "skills": []
+      "skills": [
+        "open-pr"
+      ]
     },
     "investigate": {
       "skills": []

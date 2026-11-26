@@ -2,13 +2,18 @@
 
 Items deferred on purpose, and the v0 Components not built yet.
 
-## dev-task (development, v0)
+## dev-task (development)
 
-Run one Task: read the surrounding code patterns, describe the change and wait for the go, implement, validate only the changed files, commit, mark the Task `done` and check its box in the Planning.
+Not built for now: the user asks for the implementation directly ("implement Task 2 of ABC-123"). Build it if keeping statuses, validation and commits consistent by hand gets tiresome. Draft decisions:
 
-## open-pr (delivery, v0)
-
-Open the pull request in the team format (Summary, Evidence, Merge Danger), after showing it to the user.
+- `/devflow:dev-task <KEY> [N]`: without `N`, the next `todo` Task whose dependencies are `done`, among the Tasks of the repository the session is in.
+- Branch and commit formats in `<vault>/devflow/git.md` (defaults in the template).
+- Validation commands (changed files only, build, full suite) and the default branch in the repository profile `<vault>/devflow/projects/<repo>.md`; asked once and written when missing.
+- Two stops: before implementing (what changes and why) and before committing (summary and message). No push.
+- Files changed outside the Task: list them and ask; never revert without confirmation.
+- Questions settled during the Task go to a "Decisions" section at the end of the Task file.
+- Closing: Task `done`, its box checked in the Planning, `log.md` entry with the commit hash; `blocked` with the reason when stopped.
+- Parallel Tasks in worktrees: later (the worktree starts from the default branch, not the Task's).
 
 ## add-guardrail (base, v0)
 
