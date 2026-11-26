@@ -4,7 +4,9 @@ Items deferred on purpose, and the v0 Components not built yet.
 
 ## investigate-issue (investigate)
 
-A step between `pick-issue` and `plan-issue` for Issues whose cause is not known yet: planning asked questions the user could not answer before understanding how the system works. Explores on purpose (code in the Issue's `paths`, `awsq`/`dbq` read-only, reproduction), based on Matt Pocock's `diagnosing-bugs` (a red-capable feedback loop before any hypothesis). Writes `issues/<KEY>/investigation.md` (not a Task): how it works today with `file:line` evidence marked confirmed or inferred, reproduction, root cause or live hypotheses, open questions, knowledge to record. `plan-issue` reads it, and offers to pause and investigate when the user answers "I don't know". Also usable without an Issue.
+Gathers **facts** about a problem, without concluding: planning asked questions the user could not answer before understanding how the system behaves. Based on Matt Pocock's `diagnosing-bugs`: build a red-capable feedback loop (a failing test, a curl, a query) before anything else, then reproduce and minimise. Uses `awsq`/`dbq` read-only, logs and tests; starts from the analysis map (`references/analysis-map.md`) when an analysis exists. Writes `issues/<KEY>/investigation.md` (not a Task): the reproduction (command, output), observed facts with evidence, what was tried, open questions only people can answer. The verdict is `/devflow:diagnose`'s job; `plan-issue` reads both. When the user answers "I don't know" in planning, `plan-issue` offers to pause for analysis or investigation. Also usable without an Issue.
+
+Split of the trio: `analyze` (the code, neutral), `investigate-issue` (the facts), `diagnose` (the verdict, crossing the problem with both).
 
 ## to-spec, to-tickets and triage (new work on the tracker)
 
